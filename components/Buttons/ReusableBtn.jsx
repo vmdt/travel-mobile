@@ -9,14 +9,16 @@ const ReusableBtn = ({
     btnWidth,
     backgroundColor,
     borderWidth,
-    borderColor
+    borderColor,
+    styleBtn,
+    styleText
 }) => {
   return (
     <TouchableOpacity
-        style={styles.btnStyle(btnWidth, backgroundColor, borderWidth, borderColor)}
+        style={[styles.btnStyle(btnWidth, backgroundColor, borderWidth, borderColor), styleBtn]}
         onPress={onPress}
     >
-        <Text style={styles.btnText(textColor)}>{btnText}</Text>
+        <Text style={[styles.btnText(textColor), styleText]}>{btnText}</Text>
     </TouchableOpacity>
   )
 }
