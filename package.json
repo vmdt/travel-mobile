@@ -12,6 +12,7 @@
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
+    "axios": "^1.7.7",
     "expo": "~51.0.28",
     "expo-font": "~12.0.9",
     "expo-splash-screen": "~0.27.5",
@@ -28,7 +29,8 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",
-    "prettier-plugin-organize-imports": "^4.0.0"
+    "prettier-plugin-organize-imports": "^4.0.0",
+    "react-native-dotenv": "^3.4.11"
   },
   "private": true
 }

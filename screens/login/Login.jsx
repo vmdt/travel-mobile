@@ -9,6 +9,7 @@ import {
 	TouchableWithoutFeedback,
 	View,
 } from "react-native";
+import { AuthAPI } from "../../api";
 import Icon from "../../assets/icons";
 import {
 	BackButton,
@@ -50,8 +51,13 @@ const Login = () => {
 					<Formik
 						initialValues={{ email: "", password: "" }}
 						validationSchema={loginSchema}
-						onSubmit={(values) => {
-							console.log(values);
+						onSubmit={async (values, { setErrors }) => {
+							const response = await AuthAPI.login(
+								values.email,
+								values.password,
+							);
+
+							// TODO: handle response
 						}}
 					>
 						{({
