@@ -1,0 +1,7 @@
+{
+	"useTabs": true,
+	"bracketSpacing": true,
+	"arrowParens": "always",
+	"plugins": ["prettier-plugin-organize-imports"],
+	"organizeImportsSkipDestructiveCodeActions": true
+}
