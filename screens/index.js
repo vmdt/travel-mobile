@@ -1,15 +1,9 @@
-import Onboarding from "./onboarding/Onboarding";
-import Home from "./home/Home";
-import Chat from "./chat/Chat";
 import Cart from "./cart/Cart";
-import Profile from "./profile/Profile";
+import Chat from "./chat/Chat";
+import Home from "./home/Home";
 import Login from "./login/Login";
+import Onboarding from "./onboarding/Onboarding";
+import Profile from "./profile/Profile";
+import Signup from "./signup/Signup";
 
-export {
-    Onboarding,
-    Home,
-    Chat,
-    Cart,
-    Profile,
-    Login
-}
+export { Cart, Chat, Home, Login, Onboarding, Profile, Signup };

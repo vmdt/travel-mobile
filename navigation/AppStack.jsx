@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { Login, Onboarding } from "../screens";
+import { Login, Onboarding, Signup } from "../screens";
 import BottomTabNavigation from "./BottomTabNavigation";
 
 const AppStack = () => {
@@ -21,6 +21,11 @@ const AppStack = () => {
 			<Stack.Screen
 				name="Login"
 				component={Login}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="Signup"
+				component={Signup}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

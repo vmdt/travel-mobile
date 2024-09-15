@@ -1,15 +1,24 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import React from "react";
+import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ScreenWrapper = ({ children, bg }) => {
-    const { top } = useSafeAreaInsets()
-    const paddingTop = top > 0 ? top+5 : 30;
-    return (
-        <View style={{ flex: 1, backgroundColor: bg, paddingTop: paddingTop }}>
-        {children}
-        </View>
-    )
-}
+	const { top, bottom } = useSafeAreaInsets();
+	const paddingTop = top > 0 ? top + 5 : 30;
+	const paddingBottom = bottom > 0 ? bottom + 5 : 100;
 
-export default ScreenWrapper
+	return (
+		<View
+			style={{
+				flex: 1,
+				backgroundColor: bg,
+				paddingTop,
+				paddingBottom,
+			}}
+		>
+			{children}
+		</View>
+	);
+};
+
+export default ScreenWrapper;

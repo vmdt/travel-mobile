@@ -1,12 +1,16 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from "react";
+import { Text, View } from "react-native";
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  )
-}
+	const { user } = useSelector((state) => state.auth);
+	return (
+		<View>
+			<Text>Home</Text>
+			<Text>{user.email}</Text>
+			<Text>{user.username}</Text>
+		</View>
+	);
+};
 
-export default Home
+export default Home;

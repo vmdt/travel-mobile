@@ -1,7 +1,10 @@
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import RootNavigation from "./navigation";
+import { persistor, store } from "./redux/stores";
 
 export default function App() {
 	const [fontsLoaded, error] = useFonts({
@@ -23,5 +26,11 @@ export default function App() {
 		return null;
 	}
 
-	return <RootNavigation />;
+	return (
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
+				<RootNavigation />
+			</PersistGate>
+		</Provider>
+	);
 }

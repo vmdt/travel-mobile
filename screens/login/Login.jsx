@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Formik } from "formik";
+import { StatusCodes } from "http-status-codes";
 import React from "react";
 import {
 	Image,
@@ -9,6 +10,7 @@ import {
 	TouchableWithoutFeedback,
 	View,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import { AuthAPI } from "../../api";
 import Icon from "../../assets/icons";
 import {
@@ -20,18 +22,23 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { updateUserLogin } from "../../redux/actions/authAction";
 import { loginSchema } from "../../schema/auth.schema";
 import styles from "./login.style";
 
 const Login = () => {
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
 	const [obsecureText, setObsecureText] = React.useState(true);
 
 	return (
 		<ScreenWrapper>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 				<View style={styles.container}>
-					<BackButton size={SIZES.xLarge} onPress={() => navigation.goBack()} />
+					<BackButton
+						size={SIZES.xLarge}
+						onPress={() => navigation.goBack()}
+					/>
 					<View>
 						<ReusableText
 							text="Hey,"
@@ -41,7 +48,7 @@ const Login = () => {
 						/>
 
 						<ReusableText
-							text="Welcome to your journey"
+							text="Welcome back to Travelife"
 							family="xtrabold"
 							size={SIZES.xxLarge}
 							color={COLORS.black}
@@ -49,15 +56,41 @@ const Login = () => {
 					</View>
 
 					<Formik
-						initialValues={{ email: "", password: "" }}
+						initialValues={{
+							email: "",
+							password: "",
+						}}
 						validationSchema={loginSchema}
 						onSubmit={async (values, { setErrors }) => {
 							const response = await AuthAPI.login(
 								values.email,
 								values.password,
 							);
-
-							// TODO: handle response
+							if (response?.code === StatusCodes.BAD_REQUEST) {
+								if (response.message.includes("email")) {
+									setErrors({
+										email: response.message,
+									});
+								} else {
+									setErrors({
+										password: response.message,
+									});
+								}
+							} else {
+								dispatch(
+									updateUserLogin(
+										response.metadata.user,
+										true,
+									),
+								);
+								navigation.navigate("BottomTab");
+							}
+							// navigation.dispatch(
+							// 	CommonActions.reset({
+							// 		index: 0,
+							// 		routes: [{ name: "BottomTab" }],
+							// 	}),
+							// );
 						}}
 					>
 						{({
@@ -73,7 +106,11 @@ const Login = () => {
 								<Input
 									containerStyles={{ height: 60 }}
 									icon={
-										<Icon name="mail" strokeWidth={1.6} size={SIZES.xLarge} />
+										<Icon
+											name="mail"
+											strokeWidth={1.6}
+											size={SIZES.xLarge}
+										/>
 									}
 									placeholder="Email"
 									onChangeText={handleChange("email")}
@@ -98,15 +135,23 @@ const Login = () => {
 								<Password
 									containerStyles={{ height: 60 }}
 									icon={
-										<Icon name="lock" strokeWidth={1.6} size={SIZES.xLarge} />
+										<Icon
+											name="lock"
+											strokeWidth={1.6}
+											size={SIZES.xLarge}
+										/>
 									}
 									placeholder="Password"
 									secureTextEntry={obsecureText}
 									isObsecure={obsecureText}
-									toggleObsecure={() => setObsecureText(!obsecureText)}
+									toggleObsecure={() =>
+										setObsecureText(!obsecureText)
+									}
 									onChangeText={handleChange("password")}
 									onFocus={() => setFieldTouched("password")}
-									onBlur={() => setFieldTouched("password", "")}
+									onBlur={() =>
+										setFieldTouched("password", "")
+									}
 									value={values.password}
 									autoCapitalize="none"
 									autoCorrect={false}
@@ -141,10 +186,16 @@ const Login = () => {
 									backgroundColor={COLORS.lightGreen}
 									textColor={COLORS.white}
 									styleBtn={{ height: 60 }}
-									styleText={{ fontSize: SIZES.xLarge, fontFamily: "xtrabold" }}
+									styleText={{
+										fontSize: SIZES.xLarge,
+										fontFamily: "xtrabold",
+									}}
 								/>
 
-								<TouchableOpacity style={styles.googleBtn} onPress={() => {}}>
+								<TouchableOpacity
+									style={styles.googleBtn}
+									onPress={() => {}}
+								>
 									<Image
 										source={require("../../assets/images/icons/google_96px.png")}
 										style={styles.googleIcon}
@@ -167,7 +218,9 @@ const Login = () => {
 							size={SIZES.medium}
 							color={COLORS.black}
 						/>
-						<Pressable onPress={() => navigation.navigate("Signup")}>
+						<Pressable
+							onPress={() => navigation.navigate("Signup")}
+						>
 							<ReusableText
 								text="Signup"
 								family="medium"

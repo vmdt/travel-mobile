@@ -12,6 +12,10 @@ const loginSchema = yup.object().shape({
 });
 
 const signupSchema = yup.object().shape({
+	username: yup
+		.string()
+		.required("Username must be required")
+		.min(3, "Username must be at least 3 characters"),
 	email: yup
 		.string()
 		.email("Please enter a valid email")
@@ -20,10 +24,7 @@ const signupSchema = yup.object().shape({
 		.string()
 		.required("Password must be required")
 		.min(8, "Password must be at least 8 characters"),
-	confirmPassword: yup
-		.string()
-		.required("Confirm password must be required")
-		.oneOf([yup.ref("password"), null], "Passwords must match"),
+	confirmPassword: yup.string().required("Confirm password must be required"),
 });
 
 export { loginSchema, signupSchema };
