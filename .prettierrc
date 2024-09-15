@@ -1,6 +1,6 @@
 {
 	"useTabs": true,
-	"tabWidth": 4,
+	"tabWidth": 2,
 	"bracketSpacing": true,
 	"arrowParens": "always",
 	"plugins": ["prettier-plugin-organize-imports"],
