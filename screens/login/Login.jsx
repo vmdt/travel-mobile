@@ -54,8 +54,8 @@ const Login = () => {
 
 					<Formik
 						initialValues={{
-							email: "vmdt01@gmail.com",
-							password: "12345678",
+							email: "",
+							password: "",
 						}}
 						validationSchema={loginSchema}
 						onSubmit={async (values, { setErrors }) => {
