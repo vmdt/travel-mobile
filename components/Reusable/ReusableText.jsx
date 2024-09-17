@@ -1,18 +1,20 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import React from "react";
+import { StyleSheet, Text } from "react-native";
 
-const ReusableText = ({ text, family, size, color, style }) => {
-  return (
-    <Text style={[styles.textStyle(family, size, color), style]}>{text}</Text>
-  )
-}
+const ReusableText = ({ text, family, size, color, style, ...props }) => {
+	return (
+		<Text style={[styles.textStyle(family, size, color), style]} {...props}>
+			{text}
+		</Text>
+	);
+};
 
-export default ReusableText
+export default ReusableText;
 
 const styles = StyleSheet.create({
-    textStyle: (family, size, color) => ({
-        fontFamily: family,
-        fontSize: size,
-        color: color
-    })
-})
+	textStyle: (family, size, color) => ({
+		fontFamily: family,
+		fontSize: size,
+		color: color,
+	}),
+});

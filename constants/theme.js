@@ -16,6 +16,7 @@ const COLORS = {
 	lightGrey: "#D1CFD5",
 	primary: "#4267B2",
 	ivory: "#fefce8",
+	shadow: "#171717",
 };
 
 const SIZES = {
