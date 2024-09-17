@@ -1,7 +1,7 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import {
 	Booking,
@@ -30,7 +30,7 @@ const Profile = () => {
 					<ReusableText
 						text="Profile"
 						family="xtrabold"
-						size={SIZES.xxLarge}
+						size={SIZES.xLarge}
 						color={COLORS.black}
 					/>
 					<TouchableOpacity onPress={() => {}}>
@@ -65,8 +65,21 @@ const Profile = () => {
 					/>
 				</View>
 			</View>
-			<Tab.Navigator>
-				<Tab.Screen name="Profile" component={ProfileDetails} />
+			<Tab.Navigator
+				screenOptions={({ route }) => ({
+					tabBarIndicatorStyle: styles.tabBarIndicatorStyle,
+					tabBarStyle: styles.tabBarStyle,
+					tabBarLabel: ({ focused, color }) => (
+						<ReusableText
+							text={route.name}
+							family="bold"
+							size={SIZES.medium}
+							color={focused ? COLORS.lightGreen : COLORS.black}
+						/>
+					),
+				})}
+			>
+				<Tab.Screen name="Profile Details" component={ProfileDetails} />
 				<Tab.Screen name="Booking" component={Booking} />
 			</Tab.Navigator>
 		</ScreenWrapper>

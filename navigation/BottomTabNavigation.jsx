@@ -1,83 +1,75 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Cart, Chat, Home, Profile } from '../screens';
-import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/theme';
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import { StyleSheet } from "react-native";
+import { Cart, Home, Profile } from "../screens";
+import { COLORS } from "../constants/theme";
 
 const Tab = createBottomTabNavigator();
-const tabBarStyle = {
-    paddingTop: 20,
-    borderRadius: 25,
-    height: 80,
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    right: 10,
-}
 
 const BottomTabNavigation = () => {
-    return (
-        <Tab.Navigator
-            initialRouteName='Home'
-            screenOptions={{
-                tabBarShowLabel: false,
-                headerShown: false, 
-            }}
-        >
-            <Tab.Screen name='Home' component={Home} options={{
-                tabBarStyle: tabBarStyle,
-                tabBarShowLabel: false,
-                headerShown: false,
-                tabBarIcon: ({ focused }) => (
-                    <Ionicons 
-                        name={focused ? "grid" : 'grid-outline'} 
-                        size={26} 
-                        color={focused ? COLORS.red : COLORS.gray } 
-                    />
-                ),
-            }} />
+	return (
+		<Tab.Navigator
+			initialRouteName="Home"
+			screenOptions={({ route }) => ({
+				tabBarIcon: ({ color, size, focused }) => {
+					let iconName;
 
-            <Tab.Screen name='Chat' component={Chat} options={{
-                tabBarStyle: tabBarStyle,
-                tabBarShowLabel: false,
-                headerShown: false,
-                tabBarIcon: ({ focused }) => (
-                    <Ionicons 
-                        name={focused ? "chatbubbles" : 'chatbubbles-outline'} 
-                        size={26} 
-                        color={focused ? COLORS.red : COLORS.gray } 
-                    />
-                ),
-            }}/>
+					switch (route.name) {
+						case "Home":
+							iconName = focused ? "grid" : "grid-outline";
+							break;
+						case "Cart":
+							iconName = focused ? "cart" : "cart-outline";
+							break;
+						case "Profile":
+							iconName = focused ? "person" : "person-outline";
+							break;
+					}
+					return <Ionicons name={iconName} size={size} color={color} />;
+				},
+				tabBarLabel: () => null,
+				tabBarStyle: styles.tabBarStyle,
+				tabBarItemStyle: styles.tabBarItemStyle,
+				tabBarActiveBackgroundColor: COLORS.lightGreen,
+				tabBarActiveTintColor: COLORS.white,
+				headerShown: false,
+			})}
+		>
+			<Tab.Screen name="Home" component={Home} />
 
-            <Tab.Screen name='Cart' component={Cart} options={{
-                tabBarStyle: tabBarStyle,
-                tabBarShowLabel: false,
-                headerShown: false,
-                tabBarIcon: ({ focused }) => (
-                    <Ionicons 
-                        name={focused ? "cart" : 'cart-outline'} 
-                        size={26} 
-                        color={focused ? COLORS.red : COLORS.gray } 
-                    />
-                ),
-            }}/>
+			{/* <Tab.Screen name="Chat" component={Chat} /> */}
 
-            <Tab.Screen name='Profile' component={Profile} options={{
-                tabBarStyle: tabBarStyle,
-                tabBarShowLabel: false,
-                headerShown: false,
-                tabBarIcon: ({ focused }) => (
-                    <Ionicons 
-                        name={focused ? "person" : 'person-outline'} 
-                        size={26} 
-                        color={focused ? COLORS.red : COLORS.gray } 
-                    />
-                ),
-            }}/>
-        </Tab.Navigator>
-    )
-}
+			<Tab.Screen name="Cart" component={Cart} />
 
-export default BottomTabNavigation
+			<Tab.Screen name="Profile" component={Profile} />
+		</Tab.Navigator>
+	);
+};
+
+const styles = StyleSheet.create({
+	tabBarStyle: {
+		height: 80,
+		backgroundColor: COLORS.white,
+		position: "absolute",
+		bottom: 10,
+		left: 20,
+		right: 20,
+		borderRadius: 40,
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 5,
+		},
+		shadowOpacity: 0.5,
+		shadowRadius: 5,
+		elevation: 5,
+	},
+	tabBarItemStyle: {
+		paddingVertical: 10,
+		margin: 10,
+		borderRadius: 40,
+	},
+});
+
+export default BottomTabNavigation;

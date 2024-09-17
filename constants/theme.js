@@ -15,6 +15,7 @@ const COLORS = {
 	gray: "#8C8896",
 	lightGrey: "#D1CFD5",
 	primary: "#4267B2",
+	ivory: "#fefce8",
 };
 
 const SIZES = {

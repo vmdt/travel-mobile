@@ -35,10 +35,7 @@ const Login = () => {
 		<ScreenWrapper>
 			<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 				<View style={styles.container}>
-					<BackButton
-						size={SIZES.xLarge}
-						onPress={() => navigation.goBack()}
-					/>
+					<BackButton size={SIZES.xLarge} onPress={() => navigation.goBack()} />
 					<View>
 						<ReusableText
 							text="Hey,"
@@ -57,8 +54,8 @@ const Login = () => {
 
 					<Formik
 						initialValues={{
-							email: "",
-							password: "",
+							email: "vmdt01@gmail.com",
+							password: "12345678",
 						}}
 						validationSchema={loginSchema}
 						onSubmit={async (values, { setErrors }) => {
@@ -77,12 +74,7 @@ const Login = () => {
 									});
 								}
 							} else {
-								dispatch(
-									updateUserLogin(
-										response.metadata.user,
-										true,
-									),
-								);
+								dispatch(updateUserLogin(response.metadata.user, true));
 								navigation.navigate("BottomTab");
 							}
 							// navigation.dispatch(
@@ -106,11 +98,7 @@ const Login = () => {
 								<Input
 									containerStyles={{ height: 60 }}
 									icon={
-										<Icon
-											name="mail"
-											strokeWidth={1.6}
-											size={SIZES.xLarge}
-										/>
+										<Icon name="mail" strokeWidth={1.6} size={SIZES.xLarge} />
 									}
 									placeholder="Email"
 									onChangeText={handleChange("email")}
@@ -135,23 +123,15 @@ const Login = () => {
 								<Password
 									containerStyles={{ height: 60 }}
 									icon={
-										<Icon
-											name="lock"
-											strokeWidth={1.6}
-											size={SIZES.xLarge}
-										/>
+										<Icon name="lock" strokeWidth={1.6} size={SIZES.xLarge} />
 									}
 									placeholder="Password"
 									secureTextEntry={obsecureText}
 									isObsecure={obsecureText}
-									toggleObsecure={() =>
-										setObsecureText(!obsecureText)
-									}
+									toggleObsecure={() => setObsecureText(!obsecureText)}
 									onChangeText={handleChange("password")}
 									onFocus={() => setFieldTouched("password")}
-									onBlur={() =>
-										setFieldTouched("password", "")
-									}
+									onBlur={() => setFieldTouched("password", "")}
 									value={values.password}
 									autoCapitalize="none"
 									autoCorrect={false}
@@ -192,10 +172,7 @@ const Login = () => {
 									}}
 								/>
 
-								<TouchableOpacity
-									style={styles.googleBtn}
-									onPress={() => {}}
-								>
+								<TouchableOpacity style={styles.googleBtn} onPress={() => {}}>
 									<Image
 										source={require("../../assets/images/icons/google_96px.png")}
 										style={styles.googleIcon}
@@ -218,9 +195,7 @@ const Login = () => {
 							size={SIZES.medium}
 							color={COLORS.black}
 						/>
-						<Pressable
-							onPress={() => navigation.navigate("Signup")}
-						>
+						<Pressable onPress={() => navigation.navigate("Signup")}>
 							<ReusableText
 								text="Signup"
 								family="medium"

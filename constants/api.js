@@ -1,6 +1,4 @@
-import { BASE_API_URL } from "@env";
-
-const BASE_URL = BASE_API_URL;
+const BASE_URL = "http://172.16.126.1:4001/api/v1";
 
 const API_ENDPOINTS = {
 	LOGIN: "/auth/login",

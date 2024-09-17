@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { SIZES } from "../../constants/theme";
+import { COLORS, SIZES } from "../../constants/theme";
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,6 +13,13 @@ const styles = StyleSheet.create({
 		borderRadius: 99,
 		resizeMode: "cover",
 	},
+	tabBarStyle: {
+		backgroundColor: COLORS.white,
+		borderBlockEndColor: 30,
+	},
+	tabBarIndicatorStyle: {
+		backgroundColor: COLORS.lightGreen,
+	}
 });
 
 export default styles;
