@@ -1,6 +1,7 @@
 import {
 	UPDATE_ONBOARDING_STATUS,
 	UPDATE_USER_LOGIN,
+	UPDATE_USER_LOGOUT,
 	UPDATE_USER_SIGNUP,
 } from "../constants";
 
@@ -28,6 +29,12 @@ const authReducer = (state = initalState, action) => {
 				...state,
 				user,
 				isLoggedIn,
+			};
+		case UPDATE_USER_LOGOUT:
+			return {
+				...state,
+				user: null,
+				isLoggedIn: false,
 			};
 		default:
 			return state;

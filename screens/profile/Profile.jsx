@@ -1,8 +1,9 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
+import { Image, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	Booking,
 	ProfileDetails,
@@ -10,12 +11,15 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { AVATAR_DEFAULT, COLORS, SIZES } from "../../constants/theme";
+import { updateUserLogout } from "../../redux/actions/authAction";
 import styles from "./profile.style";
 
 const Tab = createMaterialTopTabNavigator();
 
 const Profile = () => {
+	const navigator = useNavigation();
 	const { user } = useSelector((state) => state.auth);
+	const dispatch = useDispatch();
 
 	return (
 		<ScreenWrapper>
@@ -33,7 +37,12 @@ const Profile = () => {
 						size={SIZES.xLarge}
 						color={COLORS.black}
 					/>
-					<TouchableOpacity onPress={() => {}}>
+					<TouchableOpacity
+						onPress={() => {
+							dispatch(updateUserLogout());
+							navigator.navigate("Login");
+						}}
+					>
 						<AntDesign name="logout" size={24} color="black" />
 					</TouchableOpacity>
 				</View>

@@ -15,3 +15,11 @@ export const updateUserSignup = (user, isLoggedIn) => {
 		isLoggedIn,
 	};
 };
+
+export const updateUserLogout = () => {
+	return {
+		type: UPDATE_USER_LOGIN,
+		user: null,
+		isLoggedIn: false,
+	};
+};
