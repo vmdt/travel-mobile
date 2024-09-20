@@ -1,9 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { StyleSheet } from "react-native";
-import { Cart, Home, Profile } from "../screens";
+import { Platform, StyleSheet } from "react-native";
 import { COLORS } from "../constants/theme";
+import { Cart, Home, Profile } from "../screens";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		height: 80,
 		backgroundColor: COLORS.white,
 		position: "absolute",
-		bottom: 10,
+		bottom: 20,
 		left: 20,
 		right: 20,
 		borderRadius: 40,
@@ -64,11 +64,20 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.5,
 		shadowRadius: 5,
 		elevation: 5,
+		...Platform.select({
+			ios: {
+				paddingBottom: 20,
+			},
+			android: {
+				paddingBottom: 10,
+			},
+		}),
 	},
 	tabBarItemStyle: {
 		paddingVertical: 10,
 		margin: 10,
 		borderRadius: 40,
+		height: "100%",
 	},
 });
 

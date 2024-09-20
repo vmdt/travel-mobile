@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingVertical: SIZES.medium,
-		paddingHorizontal: SIZES.large + 5,
+		paddingHorizontal: SIZES.large - 5,
 	},
 	header: {
 		flexDirection: "row",
