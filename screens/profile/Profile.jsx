@@ -56,7 +56,7 @@ const Profile = () => {
 					}}
 				>
 					<Image
-						source={{ uri: user?.profilePicture ?? AVATAR_DEFAULT }}
+						source={{ uri: user?.profilePicture || AVATAR_DEFAULT }}
 						style={styles.image}
 					/>
 					<ReusableText

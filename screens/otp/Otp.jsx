@@ -1,5 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { StatusCodes } from "http-status-codes";
+import React, { useState } from "react";
 import {
 	Image,
 	Keyboard,
@@ -10,6 +11,8 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { OtpInput } from "react-native-otp-entry";
+import { useDispatch } from "react-redux";
+import { AuthAPI } from "../../api";
 import {
 	BackButton,
 	ReusableBtn,
@@ -17,9 +20,15 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { updateUserLogin } from "../../redux/actions/authAction";
 
 const OTPVerification = () => {
 	const navigation = useNavigation();
+	const route = useRoute();
+	const dispatch = useDispatch();
+	const [otp, setOtp] = useState("");
+	const [err, setErr] = useState("");
+	const { email, user } = route.params;
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -61,7 +70,10 @@ const OTPVerification = () => {
 						<View style={{ marginTop: 30 }}>
 							<OtpInput
 								numberOfDigits={6}
-								onTextChange={(text) => console.log(text)}
+								onTextChange={(text) => {
+									setOtp(text);
+									setErr("");
+								}}
 								focusColor={COLORS.lightGreen}
 								focusStickBlinkingDuration={400}
 								theme={{
@@ -74,6 +86,17 @@ const OTPVerification = () => {
 								}}
 							/>
 						</View>
+
+						{err ? (
+							<View style={{ marginTop: 10 }}>
+								<ReusableText
+									text={err}
+									size={SIZES.small}
+									family="medium"
+									color={COLORS.red}
+								/>
+							</View>
+						) : null}
 
 						<View
 							style={{
@@ -88,7 +111,13 @@ const OTPVerification = () => {
 								size={SIZES.medium}
 								family="medium"
 							/>
-							<TouchableOpacity onPress={() => {}}>
+							<TouchableOpacity
+								onPress={async () => {
+									await AuthAPI.sendOtp({
+										email: email,
+									});
+								}}
+							>
 								<ReusableText
 									text="Resend"
 									size={SIZES.medium}
@@ -99,8 +128,28 @@ const OTPVerification = () => {
 						</View>
 
 						<ReusableBtn
-							onPress={() => {
-								navigation.navigate("BottomTab");
+							onPress={async () => {
+								if (otp.length < 6) {
+									setErr("Please enter a valid OTP");
+									return;
+								}
+
+								const verifyRes = await AuthAPI.verifyOtp({
+									email,
+									otp,
+								});
+
+								if (verifyRes.status != StatusCodes.OK) {
+									setErr("Invalid OTP");
+									return;
+								} else {
+									setErr("");
+									dispatch(updateUserLogin(user, true));
+									navigation.reset({
+										index: 0,
+										routes: [{ name: "BottomTab" }],
+									});
+								}
 							}}
 							btnText="Verify"
 							btnWidth="80%"

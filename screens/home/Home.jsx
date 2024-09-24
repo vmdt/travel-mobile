@@ -13,7 +13,7 @@ import {
 	ReusableText,
 	ScreenWrapper,
 } from "../../components";
-import { COLORS, SIZES } from "../../constants/theme";
+import { AVATAR_DEFAULT, COLORS, SIZES } from "../../constants/theme";
 import mockCategories from "../../data/categories";
 import mockGroups from "../../data/groups";
 import mockTours from "../../data/tours";
@@ -36,7 +36,7 @@ const Home = () => {
 						<View style={styles.headerContent}>
 							<TouchableOpacity onPress={() => navigation.navigate("Profile")}>
 								<Avatar
-									source={user?.profilePicture}
+									source={user?.profilePicture || AVATAR_DEFAULT}
 									imageStyle={{
 										width: 50,
 										height: 50,

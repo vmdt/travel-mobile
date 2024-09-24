@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		height: 80,
 		backgroundColor: COLORS.white,
 		position: "absolute",
-		bottom: 20,
+		bottom: 15,
 		left: 20,
 		right: 20,
 		borderRadius: 40,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 				paddingBottom: 20,
 			},
 			android: {
-				paddingBottom: 10,
+				paddingBottom: 20,
 			},
 		}),
 	},

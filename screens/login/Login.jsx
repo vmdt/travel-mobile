@@ -22,7 +22,6 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
-import { updateUserLogin } from "../../redux/actions/authAction";
 import { loginSchema } from "../../schema/auth.schema";
 import styles from "./login.style";
 
@@ -74,15 +73,12 @@ const Login = () => {
 									});
 								}
 							} else {
-								dispatch(updateUserLogin(response.metadata.user, true));
-								navigation.navigate("BottomTab");
+								await AuthAPI.sendOtp({ email: values.email });
+								navigation.navigate("OTPVerification", {
+									email: values.email,
+									user: response.metadata.user,
+								});
 							}
-							// navigation.dispatch(
-							// 	CommonActions.reset({
-							// 		index: 0,
-							// 		routes: [{ name: "BottomTab" }],
-							// 	}),
-							// );
 						}}
 					>
 						{({
