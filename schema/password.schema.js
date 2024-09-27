@@ -7,4 +7,12 @@ const forgotPasswordSchema = yup.object().shape({
 		.required("Email must be required"),
 });
 
-export { forgotPasswordSchema };
+const resetPasswordShema = yup.object().shape({
+	password: yup
+		.string()
+		.required("Password must be required")
+		.min(8, "Password must be at least 8 characters"),
+	confirmPassword: yup.string().required("Confirm password must be required"),
+});
+
+export { forgotPasswordSchema, resetPasswordShema };

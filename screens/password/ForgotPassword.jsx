@@ -65,11 +65,12 @@ const ForgotPassword = () => {
 
 						<Formik
 							initialValues={{
-								email: "",
-								password: "",
+								email: "vodat3444@gmail.com",
 							}}
 							validationSchema={forgotPasswordSchema}
-							onSubmit={async (values, { setErrors }) => {}}
+							onSubmit={async (values, { setErrors }) => {
+								navigation.navigate("ResetPassword");
+							}}
 						>
 							{({
 								handleChange,

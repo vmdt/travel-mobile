@@ -6,6 +6,7 @@ import {
 	Login,
 	Onboarding,
 	OTPVerification,
+	ResetPassword,
 	Signup,
 } from "../screens";
 import BottomTabNavigation from "./BottomTabNavigation";
@@ -39,6 +40,11 @@ const AppStack = () => {
 			<Stack.Screen
 				name="ForgotPassword"
 				component={ForgotPassword}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="ResetPassword"
+				component={ResetPassword}
 				options={{ headerShown: false }}
 			/>
 			<Stack.Screen
