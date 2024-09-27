@@ -22,6 +22,7 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { updateUserLogin } from "../../redux/actions/authAction";
 import { loginSchema } from "../../schema/auth.schema";
 import styles from "./login.style";
 
@@ -73,11 +74,19 @@ const Login = () => {
 									});
 								}
 							} else {
-								await AuthAPI.sendOtp({ email: values.email });
-								navigation.navigate("OTPVerification", {
-									email: values.email,
-									user: response.metadata.user,
-								});
+								if (!response.metadata.user.isVerifiedOTP) {
+									await AuthAPI.sendOtp({ email: values.email });
+									navigation.navigate("OTPVerification", {
+										email: values.email,
+										user: response.metadata.user,
+									});
+								} else {
+									dispatch(updateUserLogin(response.metadata.user));
+									navigation.reset({
+										index: 0,
+										routes: [{ name: "BottomTab" }],
+									});
+								}
 							}
 						}}
 					>
@@ -145,17 +154,20 @@ const Login = () => {
 									)}
 								</View>
 
-								<TouchableOpacity
-									onPress={() => navigation.navigate("ForgotPassword")}
-								>
-									<ReusableText
-										style={styles.forgotPassword}
-										text="Forgot Password?"
-										family="medium"
-										size={SIZES.medium}
-										color={COLORS.black}
-									/>
-								</TouchableOpacity>
+								<View>
+									<TouchableOpacity
+										onPress={() => navigation.navigate("ForgotPassword")}
+										style={{ alignSelf: "flex-end" }}
+									>
+										<ReusableText
+											style={styles.forgotPassword}
+											text="Forgot Password?"
+											family="medium"
+											size={SIZES.medium}
+											color={COLORS.black}
+										/>
+									</TouchableOpacity>
+								</View>
 
 								<ReusableBtn
 									onPress={() => {

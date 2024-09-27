@@ -33,10 +33,7 @@ const Signup = () => {
 
 	return (
 		<ScreenWrapper>
-			<KeyboardAwareScrollView
-				enableOnAndroid={true}
-				extraScrollHeight={100}
-			>
+			<KeyboardAwareScrollView enableOnAndroid={true} extraScrollHeight={100}>
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 					<View style={styles.container}>
 						<BackButton
@@ -65,31 +62,30 @@ const Signup = () => {
 									password: values.password,
 									passwordConfirm: values.confirmPassword,
 								});
-								if (
-									response?.code === StatusCodes.BAD_REQUEST
-								) {
-									if (
-										response.message.startsWith("Username")
-									) {
+								if (response?.code === StatusCodes.BAD_REQUEST) {
+									if (response.message.startsWith("Username")) {
 										setErrors({
 											email: response.message,
 											username: response.message,
 										});
-									} else if (
-										response.message.startsWith("Password")
-									) {
+									} else if (response.message.startsWith("Password")) {
 										setErrors({
 											confirmPassword: response.message,
 										});
 									}
 								} else {
-									dispatch(
-										updateUserSignup(
-											response.metadata.user,
-											true,
-										),
-									);
-									navigation.navigate("BottomTab");
+									if (!response.metadata.user.isVerifiedOTP) {
+										navigation.navigate("Otp", {
+											email: values.email,
+											user: response.metadata.user,
+										});
+									} else {
+										dispatch(updateUserSignup(response.metadata.user, true));
+										navigation.reset({
+											index: 0,
+											routes: [{ name: "BottomTab" }],
+										});
+									}
 								}
 							}}
 						>
@@ -108,53 +104,38 @@ const Signup = () => {
 									<Input
 										containerStyles={{ height: 60 }}
 										icon={
-											<Icon
-												name="user"
-												strokeWidth={1.6}
-												size={SIZES.xLarge}
-											/>
+											<Icon name="user" strokeWidth={1.6} size={SIZES.xLarge} />
 										}
 										placeholder="Username"
 										onChangeText={handleChange("username")}
-										onFocus={() =>
-											setFieldTouched("username")
-										}
-										onBlur={() =>
-											setFieldTouched("username", "")
-										}
+										onFocus={() => setFieldTouched("username")}
+										onBlur={() => setFieldTouched("username", "")}
 										value={values.username}
 										autoCapitalize="none"
 										autoCorrect={false}
 									/>
 
 									<View style={{ marginTop: -20 }}>
-										{touched.username &&
-											errors.username && (
-												<ReusableText
-													style={styles.errorText}
-													text={errors.username}
-													family="medium"
-													size={SIZES.small}
-													color={COLORS.red}
-												/>
-											)}
+										{touched.username && errors.username && (
+											<ReusableText
+												style={styles.errorText}
+												text={errors.username}
+												family="medium"
+												size={SIZES.small}
+												color={COLORS.red}
+											/>
+										)}
 									</View>
 
 									<Input
 										containerStyles={{ height: 60 }}
 										placeholder="Email"
 										icon={
-											<Icon
-												name="mail"
-												strokeWidth={1.6}
-												size={SIZES.xLarge}
-											/>
+											<Icon name="mail" strokeWidth={1.6} size={SIZES.xLarge} />
 										}
 										onChangeText={handleChange("email")}
 										onFocus={() => setFieldTouched("email")}
-										onBlur={() =>
-											setFieldTouched("email", "")
-										}
+										onBlur={() => setFieldTouched("email", "")}
 										value={values.email}
 										autoCapitalize="none"
 										autoCorrect={false}
@@ -175,90 +156,61 @@ const Signup = () => {
 									<Password
 										containerStyles={{ height: 60 }}
 										icon={
-											<Icon
-												name="lock"
-												strokeWidth={1.6}
-												size={SIZES.xLarge}
-											/>
+											<Icon name="lock" strokeWidth={1.6} size={SIZES.xLarge} />
 										}
 										placeholder="Password"
 										secureTextEntry={obsecureText}
 										isObsecure={obsecureText}
-										toggleObsecure={() =>
-											setObsecureText(!obsecureText)
-										}
+										toggleObsecure={() => setObsecureText(!obsecureText)}
 										onChangeText={handleChange("password")}
-										onFocus={() =>
-											setFieldTouched("password")
-										}
-										onBlur={() =>
-											setFieldTouched("password", "")
-										}
+										onFocus={() => setFieldTouched("password")}
+										onBlur={() => setFieldTouched("password", "")}
 										value={values.password}
 										autoCapitalize="none"
 										autoCorrect={false}
 									/>
 
 									<View style={{ marginTop: -20 }}>
-										{touched.password &&
-											errors.password && (
-												<ReusableText
-													style={styles.errorText}
-													text={errors.password}
-													family="medium"
-													size={SIZES.small}
-													color={COLORS.red}
-												/>
-											)}
+										{touched.password && errors.password && (
+											<ReusableText
+												style={styles.errorText}
+												text={errors.password}
+												family="medium"
+												size={SIZES.small}
+												color={COLORS.red}
+											/>
+										)}
 									</View>
 
 									<Password
 										containerStyles={{ height: 60 }}
 										icon={
-											<Icon
-												name="lock"
-												strokeWidth={1.6}
-												size={SIZES.xLarge}
-											/>
+											<Icon name="lock" strokeWidth={1.6} size={SIZES.xLarge} />
 										}
 										placeholder="Confirm Password"
 										secureTextEntry={obsecureTextConfirm}
 										isObsecure={obsecureTextConfirm}
 										toggleObsecure={() =>
-											setObsecureTextConfirm(
-												!obsecureTextConfirm,
-											)
+											setObsecureTextConfirm(!obsecureTextConfirm)
 										}
-										onChangeText={handleChange(
-											"confirmPassword",
-										)}
-										onFocus={() =>
-											setFieldTouched("confirmPassword")
-										}
-										onBlur={() =>
-											setFieldTouched(
-												"confirmPassword",
-												"",
-											)
-										}
+										onChangeText={handleChange("confirmPassword")}
+										onFocus={() => setFieldTouched("confirmPassword")}
+										onBlur={() => setFieldTouched("confirmPassword", "")}
 										value={values.confirmPassword}
 										autoCapitalize="none"
 										autoCorrect={false}
 									/>
 
 									<View style={{ marginTop: -20 }}>
-										{touched.confirmPassword &&
-											errors.confirmPassword && (
-												<ReusableText
-													style={styles.errorText}
-													text={
-														errors.confirmPassword
-													}
-													family="medium"
-													size={SIZES.small}
-													color={COLORS.red}
-												/>
-											)}
+										{touched.confirmPassword && errors.confirmPassword && (
+											<ReusableText
+												style={styles.errorText}
+												text={errors.confirmPassword}
+												family="medium"
+												size={SIZES.small}
+												color={COLORS.red}
+											/>
+										)}
 									</View>
 
 									<ReusableBtn
@@ -286,9 +238,7 @@ const Signup = () => {
 								size={SIZES.medium}
 								color={COLORS.black}
 							/>
-							<Pressable
-								onPress={() => navigation.navigate("Login")}
-							>
+							<Pressable onPress={() => navigation.navigate("Login")}>
 								<ReusableText
 									text="Login"
 									family="medium"
