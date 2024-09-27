@@ -69,7 +69,10 @@ const ForgotPassword = () => {
 							}}
 							validationSchema={forgotPasswordSchema}
 							onSubmit={async (values, { setErrors }) => {
-								navigation.navigate("ResetPassword");
+								navigation.navigate("OTPVerification", {
+									isForgotPassword: true,
+									email: values.email,
+								});
 							}}
 						>
 							{({

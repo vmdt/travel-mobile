@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { StatusCodes } from "http-status-codes";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Image,
 	Keyboard,
@@ -28,7 +28,14 @@ const OTPVerification = () => {
 	const dispatch = useDispatch();
 	const [otp, setOtp] = useState("");
 	const [err, setErr] = useState("");
-	const { email, user } = route.params;
+	const { email, user, isForgotPassword = false } = route.params;
+
+	useEffect(() => {
+		const sendOtp = async () => {
+			const otpRes = await AuthAPI.sendOtp({ email });
+		};
+		sendOtp();
+	}, [email]);
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -133,7 +140,6 @@ const OTPVerification = () => {
 									setErr("Please enter a valid OTP");
 									return;
 								}
-
 								const verifyRes = await AuthAPI.verifyOtp({
 									email,
 									otp,
@@ -142,8 +148,12 @@ const OTPVerification = () => {
 								if (verifyRes.status != StatusCodes.OK) {
 									setErr("Invalid OTP");
 									return;
+								}
+								setErr("");
+
+								if (isForgotPassword) {
+									navigation.navigate("ResetPassword", { email, otp });
 								} else {
-									setErr("");
 									dispatch(updateUserLogin(user, true));
 									navigation.reset({
 										index: 0,

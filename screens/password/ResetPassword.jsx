@@ -1,8 +1,10 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Formik } from "formik";
+import { StatusCodes } from "http-status-codes";
 import React, { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { AuthAPI } from "../../api";
 import Icon from "../../assets/icons";
 import {
 	BackButton,
@@ -16,8 +18,10 @@ import { resetPasswordShema } from "../../schema/password.schema";
 
 const ResetPassword = () => {
 	const navigation = useNavigation();
+	const route = useRoute();
 	const [obsecureText, setObsecureText] = useState(true);
 	const [obsecureTextConfirm, setObsecureTextConfirm] = useState(true);
+	const { email, otp } = route.params;
 
 	return (
 		<ScreenWrapper>
@@ -28,7 +32,10 @@ const ResetPassword = () => {
 				extraScrollHeight={200}
 			>
 				<View style={styles.container}>
-					<BackButton size={SIZES.xLarge} onPress={() => navigation.goBack()} />
+					<BackButton
+						size={SIZES.xLarge}
+						onPress={() => navigation.navigate("ForgotPassword")}
+					/>
 
 					<Image
 						source={require("../../assets/images/reset-password.png")}
@@ -60,7 +67,29 @@ const ResetPassword = () => {
 							confirmPassword: "",
 						}}
 						validationSchema={resetPasswordShema}
-						onSubmit={async (values, { setErrors }) => {}}
+						onSubmit={async (values, { setErrors }) => {
+							const response = await AuthAPI.resetPassword({
+								email,
+								otp,
+								password: values.password,
+								passwordConfirm: values.confirmPassword,
+							});
+
+							if (response?.code === StatusCodes.BAD_REQUEST) {
+								if (response.message.startsWith("Password")) {
+									setErrors({
+										confirmPassword: response.message,
+									});
+								} else {
+									// TODO: Handle invalid OTP, handle toast message
+								}
+							} else {
+								navigation.reset({
+									index: 0,
+									routes: [{ name: "Login" }],
+								});
+							}
+						}}
 					>
 						{({
 							handleChange,
@@ -135,7 +164,9 @@ const ResetPassword = () => {
 								</View>
 
 								<ReusableBtn
-									onPress={handleSubmit}
+									onPress={() => {
+										handleSubmit();
+									}}
 									btnText="Reset Password"
 									btnWidth={SIZES.full}
 									backgroundColor={COLORS.lightGreen}

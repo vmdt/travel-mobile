@@ -75,7 +75,6 @@ const Login = () => {
 								}
 							} else {
 								if (!response.metadata.user.isVerifiedOTP) {
-									await AuthAPI.sendOtp({ email: values.email });
 									navigation.navigate("OTPVerification", {
 										email: values.email,
 										user: response.metadata.user,
