@@ -4,12 +4,14 @@ import Home from "./home/Home";
 import Login from "./login/Login";
 import Onboarding from "./onboarding/Onboarding";
 import OTPVerification from "./otp/Otp";
+import ForgotPassword from "./password/ForgotPassword";
 import Profile from "./profile/Profile";
 import Signup from "./signup/Signup";
 
 export {
 	Cart,
 	Chat,
+	ForgotPassword,
 	Home,
 	Login,
 	OTPVerification,

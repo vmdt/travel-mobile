@@ -145,13 +145,17 @@ const Login = () => {
 									)}
 								</View>
 
-								<ReusableText
-									style={styles.forgotPassword}
-									text="Forgot Password?"
-									family="medium"
-									size={SIZES.medium}
-									color={COLORS.black}
-								/>
+								<TouchableOpacity
+									onPress={() => navigation.navigate("ForgotPassword")}
+								>
+									<ReusableText
+										style={styles.forgotPassword}
+										text="Forgot Password?"
+										family="medium"
+										size={SIZES.medium}
+										color={COLORS.black}
+									/>
+								</TouchableOpacity>
 
 								<ReusableBtn
 									onPress={() => {

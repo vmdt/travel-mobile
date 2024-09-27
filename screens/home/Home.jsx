@@ -112,6 +112,8 @@ const Home = () => {
 							/>
 							<GroupListings listings={mockGroups} />
 						</View>
+
+						{/* <HeightSpacer height={100} /> */}
 					</View>
 				</View>
 			</ScrollView>

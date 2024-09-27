@@ -1,7 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Login, Onboarding, OTPVerification, Signup } from "../screens";
+import {
+	ForgotPassword,
+	Login,
+	Onboarding,
+	OTPVerification,
+	Signup,
+} from "../screens";
 import BottomTabNavigation from "./BottomTabNavigation";
 
 const AppStack = () => {
@@ -28,6 +34,11 @@ const AppStack = () => {
 			<Stack.Screen
 				name="OTPVerification"
 				component={OTPVerification}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="ForgotPassword"
+				component={ForgotPassword}
 				options={{ headerShown: false }}
 			/>
 			<Stack.Screen

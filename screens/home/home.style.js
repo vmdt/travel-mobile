@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingVertical: SIZES.medium,
 		paddingHorizontal: SIZES.large - 5,
+		paddingBottom: 150,
 	},
 	header: {
 		flexDirection: "row",
