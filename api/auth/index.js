@@ -1,10 +1,10 @@
 import { StatusCodes } from "http-status-codes";
-import { API_ENDPOINTS } from "../../constants/api";
+import { AUTH_ENDPOINTS } from "../../constants/api";
 import api from "../axios";
 
 export const login = async (email, password) => {
 	try {
-		const response = await api.post(API_ENDPOINTS.LOGIN, {
+		const response = await api.post(AUTH_ENDPOINTS.LOGIN, {
 			email,
 			password,
 		});
@@ -19,7 +19,7 @@ export const login = async (email, password) => {
 
 export const signup = async (data) => {
 	try {
-		const response = await api.post(API_ENDPOINTS.SIGNUP, data);
+		const response = await api.post(AUTH_ENDPOINTS.SIGNUP, data);
 		return response.data;
 	} catch (error) {
 		if (error?.response?.data?.code === StatusCodes.BAD_REQUEST) {
@@ -31,7 +31,7 @@ export const signup = async (data) => {
 
 export const sendOtp = async ({ email }) => {
 	try {
-		const response = await api.post(API_ENDPOINTS.SENT_OTP, { email });
+		const response = await api.post(AUTH_ENDPOINTS.SENT_OTP, { email });
 		return response.data;
 	} catch (error) {
 		if (error?.response?.data?.code === StatusCodes.BAD_REQUEST) {
@@ -42,7 +42,7 @@ export const sendOtp = async ({ email }) => {
 
 export const verifyOtp = async ({ email, otp }) => {
 	try {
-		const response = await api.post(API_ENDPOINTS.VERIFY_OTP, { email, otp });
+		const response = await api.post(AUTH_ENDPOINTS.VERIFY_OTP, { email, otp });
 		return response.data;
 	} catch (error) {
 		if (error?.response?.data?.code === StatusCodes.BAD_REQUEST) {
@@ -58,7 +58,7 @@ export const resetPassword = async ({
 	otp,
 }) => {
 	try {
-		const response = await api.put(API_ENDPOINTS.RESET_PASSWORD, {
+		const response = await api.put(AUTH_ENDPOINTS.RESET_PASSWORD, {
 			email,
 			password,
 			passwordConfirm,

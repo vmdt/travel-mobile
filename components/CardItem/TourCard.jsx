@@ -8,12 +8,12 @@ const TourCard = ({ item }) => {
 	return (
 		<TouchableOpacity>
 			<View style={styles.item}>
-				<Image source={{ uri: item?.image }} style={styles.image} />
+				<Image source={{ uri: item?.thumbnail }} style={styles.image} />
 				<View style={styles.bookmark}>
 					<Ionicons name="bookmark-outline" size={24} color={COLORS.white} />
 				</View>
 				<ReusableText
-					text={item?.name}
+					text={item?.title}
 					family="medium"
 					size={16}
 					numberOfLines={1}
@@ -29,7 +29,7 @@ const TourCard = ({ item }) => {
 							color={COLORS.green}
 						/>
 						<ReusableText
-							text={item?.location}
+							text={item?.startLocation?.description || "Unknown"}
 							family="regular"
 							size={14}
 							numberOfLines={1}
@@ -37,7 +37,7 @@ const TourCard = ({ item }) => {
 						/>
 					</View>
 					<ReusableText
-						text={`$${item?.price}`}
+						text={`$${item?.regularPrice}`}
 						family="medium"
 						size={16}
 						color={COLORS.green}

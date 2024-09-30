@@ -1,26 +1,31 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useDispatch, useSelector } from "react-redux";
 import { COLORS, SIZES } from "../../constants/theme";
+import { getListCategories } from "../../redux/actions/categoryAction";
 import ReusableText from "../Reusable/ReusableText";
 
-const CategoryButton = ({ categories, onCategoryChange }) => {
+const CategoryButton = ({ category, onCategoryChange }) => {
 	const itemRef = useRef([]);
 	const scrollRef = useRef(null);
+	const dispatch = useDispatch();
 	const [activeIndex, setActiveIndex] = useState(0);
+	const { categories } = useSelector((state) => state.category);
+
+	useEffect(() => {
+		dispatch(getListCategories());
+		onCategoryChange(categories[0]?._id);
+	}, [dispatch]);
 
 	const handleSelectCategory = (index) => {
 		const selected = itemRef.current[index];
-		setActiveIndex(index);
-		selected?.measure((fx, fy, width, height, px, py) => {
-			scrollRef?.current?.scrollTo({
-				x: px,
-				y: 0,
-				animated: true,
-			});
+		selected.measureLayout(scrollRef.current, (x, y, width, height) => {
+			scrollRef.current.scrollTo({ x: x - 100, animated: true });
 		});
+		setActiveIndex(index);
 
-		onCategoryChange(categories[index].name);
+		onCategoryChange(categories[index]?._id);
 	};
 
 	return (

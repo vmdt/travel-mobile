@@ -22,7 +22,7 @@ import styles from "./home.style";
 const Home = () => {
 	const navigation = useNavigation();
 	const { user } = useSelector((state) => state.auth);
-	const [category, setCategory] = useState("All");
+	const [category, setCategory] = useState("");
 
 	const onCategoryChange = (category) => {
 		setCategory(category);
