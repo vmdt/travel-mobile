@@ -55,6 +55,22 @@ const styles = StyleSheet.create({
 		shadowRadius: 5,
 		elevation: 5,
 	},
+	badge: {
+		position: "absolute",
+		right: -5,
+		top: -5,
+		backgroundColor: COLORS.red,
+		borderRadius: 10,
+		width: 20,
+		height: 20,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	badgeText: {
+		color: COLORS.white,
+		fontSize: 12,
+		fontWeight: "bold",
+	},
 });
 
 export default styles;

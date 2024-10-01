@@ -27,8 +27,8 @@ const Slides = ({ item }) => {
 					btnText={"Let's go"}
 					textColor={COLORS.white}
 					btnWidth={(SIZES.width - 50) / 2.2}
-					backgroundColor={COLORS.red}
-					borderColor={COLORS.red}
+					backgroundColor={COLORS.lightGreen}
+					borderColor={COLORS.lightGreen}
 					borderWidth={0}
 				/>
 			</View>

@@ -9,6 +9,7 @@ import Input from "./Input/Input";
 import Password from "./Input/Password";
 import GroupListings from "./Listing/GroupListings";
 import Listings from "./Listing/Listings";
+import FilterModal from "./Modal/FilterModal";
 import Slides from "./Onboard/Slides";
 import ProfileDetails from "./ProfileDetails";
 import HeightSpacer from "./Reusable/HeightSpacer";
@@ -21,6 +22,7 @@ export {
 	BackButton,
 	Booking,
 	CategoryButton,
+	FilterModal,
 	GroupCard,
 	GroupListings,
 	HeightSpacer,

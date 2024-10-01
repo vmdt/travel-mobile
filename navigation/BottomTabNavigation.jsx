@@ -37,11 +37,7 @@ const BottomTabNavigation = () => {
 			})}
 		>
 			<Tab.Screen name="Home" component={Home} />
-
-			{/* <Tab.Screen name="Chat" component={Chat} /> */}
-
 			<Tab.Screen name="Cart" component={Cart} />
-
 			<Tab.Screen name="Profile" component={Profile} />
 		</Tab.Navigator>
 	);

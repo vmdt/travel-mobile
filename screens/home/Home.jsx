@@ -1,11 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import {
 	Avatar,
 	CategoryButton,
+	FilterModal,
 	GroupListings,
 	HeightSpacer,
 	Input,
@@ -23,6 +24,12 @@ const Home = () => {
 	const navigation = useNavigation();
 	const { user } = useSelector((state) => state.auth);
 	const [category, setCategory] = useState("");
+	const [modalVisible, setModalVisible] = useState(false);
+	const [selectedFilterCount, setSelectedFilterCount] = useState(0);
+
+	const handleApplyFilters = (count) => {
+		setSelectedFilterCount(count);
+	};
 
 	const onCategoryChange = (category) => {
 		setCategory(category);
@@ -80,9 +87,24 @@ const Home = () => {
 								containerStyles={{ height: 60, flex: 1 }}
 							/>
 
-							<TouchableOpacity onPress={() => {}} style={styles.filterBtn}>
+							<TouchableOpacity
+								onPress={() => {
+									setModalVisible(true);
+								}}
+								style={styles.filterBtn}
+							>
 								<Ionicons name="options" size={28} color={COLORS.white} />
+								{selectedFilterCount > 0 && (
+									<View style={styles.badge}>
+										<Text style={styles.badgeText}>{selectedFilterCount}</Text>
+									</View>
+								)}
 							</TouchableOpacity>
+							<FilterModal
+								visible={modalVisible}
+								onClose={() => setModalVisible(false)}
+								onApply={handleApplyFilters}
+							/>
 						</View>
 
 						<View style={{ gap: 10 }}>
