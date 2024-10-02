@@ -49,6 +49,10 @@ const Search = () => {
 			return;
 		}
 		const response = await SearchAPI.search(query);
+		if (response.metadata.suggestions.length === 0) {
+			setSearchResults([]);
+			return;
+		}
 		setSearchResults(response.metadata.suggestions);
 	};
 
