@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Appbar, Provider as PaperProvider } from "react-native-paper"; // Thêm import
+import { SearchAPI } from "../../api";
 import {
 	BackButton,
 	ReusableText,
@@ -42,15 +43,13 @@ const Search = () => {
 		}
 	}, []);
 
-	const handleSearch = (query) => {
+	const handleSearch = async (query) => {
 		if (query.trim() === "") {
 			setSearchResults([]);
 			return;
 		}
-		const results = mockData.filter((item) =>
-			item.title.toLowerCase().includes(query.toLowerCase()),
-		);
-		setSearchResults(results);
+		const response = await SearchAPI.search(query);
+		setSearchResults(response.metadata.suggestions);
 	};
 
 	return (

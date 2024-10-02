@@ -21,16 +21,16 @@ const SearchCard = ({ item }) => {
 						ellipsizeMode="tail"
 					/>
 
-					{item?.description && (
+					{item?.summary && (
 						<ReusableText
-							text={item?.description}
+							text={item?.summary}
 							family="regular"
 							size={14}
 							numberOfLines={2}
 						/>
 					)}
 
-					{item?.type ? (
+					{item?.type == "city" ? (
 						<View
 							style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
 						>
@@ -40,7 +40,7 @@ const SearchCard = ({ item }) => {
 								color={COLORS.green}
 							/>
 							<ReusableText
-								text={item?.type}
+								text={"City"}
 								family="regular"
 								size={14}
 								color={COLORS.green}
