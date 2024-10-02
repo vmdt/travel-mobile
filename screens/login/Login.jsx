@@ -80,7 +80,13 @@ const Login = () => {
 										user: response.metadata.user,
 									});
 								} else {
-									dispatch(updateUserLogin(response.metadata.user));
+									dispatch(
+										updateUserLogin(
+											response.metadata.user,
+											true,
+											response.metadata.accessToken,
+										),
+									);
 									navigation.reset({
 										index: 0,
 										routes: [{ name: "BottomTab" }],

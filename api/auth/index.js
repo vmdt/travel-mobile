@@ -71,3 +71,20 @@ export const resetPassword = async ({
 		}
 	}
 };
+
+export const updateUser = async (id, data, token) => {
+	try {
+		const response = await api.post(
+			`${AUTH_ENDPOINTS.UPDATE_USER}/${id}`,
+			data,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+		return response.data;
+	} catch (error) {
+		console.log("error: ", error);
+	}
+};

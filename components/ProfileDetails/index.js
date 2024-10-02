@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { COLORS, SIZES } from "../../constants/theme";
+import { updateUserProfile } from "../../redux/actions/authAction";
 import ReusableBtn from "../Buttons/ReusableBtn";
 import Input from "../Input/Input";
 import HeightSpacer from "../Reusable/HeightSpacer";
 import ReusableText from "../Reusable/ReusableText";
 
 const ProfileDetails = () => {
-	const { user } = useSelector((state) => state.auth);
+	const dispatch = useDispatch();
+	const { user, accessToken } = useSelector((state) => state.auth);
+	const [fullname, setFullname] = useState(user?.fullname);
+	const [phone, setPhone] = useState(user?.phone);
+	const [dateOfBirth, setDateOfBirth] = useState(user?.dateOfBirth);
+	const [address, setAddress] = useState(user?.address);
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
@@ -17,7 +23,8 @@ const ProfileDetails = () => {
 				<Input
 					placeholder="Full Name"
 					containerStyles={{ height: 60 }}
-					value={user?.fullname}
+					value={fullname}
+					onChangeText={setFullname}
 				/>
 			</View>
 
@@ -26,7 +33,8 @@ const ProfileDetails = () => {
 				<Input
 					placeholder="Phone Number"
 					containerStyles={{ height: 60 }}
-					value={user?.phone}
+					value={phone}
+					onChangeText={setPhone}
 				/>
 			</View>
 
@@ -40,7 +48,8 @@ const ProfileDetails = () => {
 					placeholder="Date of Birth"
 					containerStyles={{ height: 60 }}
 					keyboardType="date"
-					value={user?.dateOfBirth}
+					value={dateOfBirth}
+					onChangeText={setDateOfBirth}
 				/>
 			</View>
 
@@ -49,12 +58,26 @@ const ProfileDetails = () => {
 				<Input
 					placeholder="Address"
 					containerStyles={{ height: 60 }}
-					value={user?.address}
+					value={address}
+					onChangeText={setAddress}
 				/>
 			</View>
 
 			<ReusableBtn
-				onPress={() => {}}
+				onPress={() => {
+					dispatch(
+						updateUserProfile(
+							user?._id,
+							{
+								fullname,
+								phone,
+								dateOfBirth,
+								address,
+							},
+							accessToken,
+						),
+					);
+				}}
 				btnText="Save"
 				btnWidth={SIZES.full}
 				backgroundColor={COLORS.lightGreen}
