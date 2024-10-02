@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { COLORS, SIZES } from "../../constants/theme";
 import ReusableBtn from "../Buttons/ReusableBtn";
 import Input from "../Input/Input";
+import HeightSpacer from "../Reusable/HeightSpacer";
 import ReusableText from "../Reusable/ReusableText";
 
 const ProfileDetails = () => {
@@ -12,11 +13,7 @@ const ProfileDetails = () => {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<View style={styles.row}>
-				<ReusableText
-					text="Full Name"
-					family="medium"
-					size={SIZES.medium}
-				/>
+				<ReusableText text="Full Name" family="medium" size={SIZES.medium} />
 				<Input
 					placeholder="Full Name"
 					containerStyles={{ height: 60 }}
@@ -25,11 +22,7 @@ const ProfileDetails = () => {
 			</View>
 
 			<View style={styles.row}>
-				<ReusableText
-					text="Phone Number"
-					family="medium"
-					size={SIZES.medium}
-				/>
+				<ReusableText text="Phone Number" family="medium" size={SIZES.medium} />
 				<Input
 					placeholder="Phone Number"
 					containerStyles={{ height: 60 }}
@@ -52,11 +45,7 @@ const ProfileDetails = () => {
 			</View>
 
 			<View style={styles.row}>
-				<ReusableText
-					text="Address"
-					family="medium"
-					size={SIZES.medium}
-				/>
+				<ReusableText text="Address" family="medium" size={SIZES.medium} />
 				<Input
 					placeholder="Address"
 					containerStyles={{ height: 60 }}
@@ -76,6 +65,8 @@ const ProfileDetails = () => {
 					fontFamily: "xtrabold",
 				}}
 			/>
+
+			<HeightSpacer height={100} />
 		</ScrollView>
 	);
 };

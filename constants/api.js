@@ -6,6 +6,7 @@ const AUTH_ENDPOINTS = {
 	SENT_OTP: "/auth/send-otp",
 	VERIFY_OTP: "/auth/verify-otp",
 	RESET_PASSWORD: "/auth/reset-password-mobile",
+	UPDATE_USER: "/users",
 };
 
 const CATEGORY_ENDPOINTS = {
@@ -14,6 +15,7 @@ const CATEGORY_ENDPOINTS = {
 
 const TOUR_ENDPOINTS = {
 	GET_TOURS_BY_CATEGORY: "/tours/category",
+	GET_TOURS_BY_ID: "/tours",
 };
 
 const SEARCH_ENDPOINTS = {

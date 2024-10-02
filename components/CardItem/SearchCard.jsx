@@ -1,12 +1,19 @@
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { AVATAR_DEFAULT, COLORS } from "../../constants/theme";
 import ReusableText from "../Reusable/ReusableText";
 
 const SearchCard = ({ item }) => {
+	const navigation = useNavigation();
+
 	return (
-		<TouchableOpacity>
+		<TouchableOpacity
+			onPress={() => {
+				navigation.navigate("TourDetail", { item });
+			}}
+		>
 			<View style={styles.item}>
 				<Image
 					source={{ uri: item?.thumbnail || AVATAR_DEFAULT }}

@@ -1,5 +1,6 @@
 import Cart from "./cart/Cart";
 import Chat from "./chat/Chat";
+import TourDetail from "./detail/TourDetail";
 import Home from "./home/Home";
 import Login from "./login/Login";
 import Onboarding from "./onboarding/Onboarding";
@@ -22,4 +23,5 @@ export {
 	ResetPassword,
 	Search,
 	Signup,
+	TourDetail,
 };

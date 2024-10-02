@@ -1,12 +1,19 @@
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { COLORS } from "../../constants/theme";
 import ReusableText from "../Reusable/ReusableText";
 
 const TourCard = ({ item }) => {
+	const navigation = useNavigation();
+
 	return (
-		<TouchableOpacity>
+		<TouchableOpacity
+			onPress={() => {
+				navigation.navigate("TourDetail", { item });
+			}}
+		>
 			<View style={styles.item}>
 				<Image source={{ uri: item?.thumbnail }} style={styles.image} />
 				<View style={styles.bookmark}>
