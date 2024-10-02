@@ -2,11 +2,13 @@ import Booking from "./Booking";
 import BackButton from "./Buttons/BackButton";
 import ReusableBtn from "./Buttons/ReusableBtn";
 import GroupCard from "./CardItem/GroupCard";
+import SearchCard from "./CardItem/SearchCard";
 import TourCard from "./CardItem/TourCard";
 import CategoryButton from "./Category/CategoryButton";
 import Avatar from "./Image/Avatar";
 import Input from "./Input/Input";
 import Password from "./Input/Password";
+import SearchInput from "./Input/SearchInput";
 import GroupListings from "./Listing/GroupListings";
 import Listings from "./Listing/Listings";
 import FilterModal from "./Modal/FilterModal";
@@ -33,6 +35,8 @@ export {
 	ReusableBtn,
 	ReusableText,
 	ScreenWrapper,
+	SearchCard,
+	SearchInput,
 	Slides,
 	TourCard,
 	WidthSpacer,

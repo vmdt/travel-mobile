@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import {
@@ -26,6 +26,8 @@ const Home = () => {
 	const [category, setCategory] = useState("");
 	const [modalVisible, setModalVisible] = useState(false);
 	const [selectedFilterCount, setSelectedFilterCount] = useState(0);
+	const [searchText, setSearchText] = useState("");
+	const inputRef = useRef(null);
 
 	const handleApplyFilters = (count) => {
 		setSelectedFilterCount(count);
@@ -85,6 +87,13 @@ const Home = () => {
 								icon={<Ionicons name="search" size={24} color={COLORS.black} />}
 								placeholder="Search for places"
 								containerStyles={{ height: 60, flex: 1 }}
+								onFocus={() => {
+									navigation.navigate("Search");
+									setTimeout(() => {
+										inputRef.current.blur();
+									}, 0);
+								}}
+								inputRef={inputRef}
 							/>
 
 							<TouchableOpacity

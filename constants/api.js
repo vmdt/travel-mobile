@@ -1,4 +1,4 @@
-const BASE_URL = "https://bf67-118-69-12-34.ngrok-free.app/api/v1";
+const BASE_URL = "https://1855-118-70-102-149.ngrok-free.app/api/v1";
 
 const AUTH_ENDPOINTS = {
 	LOGIN: "/auth/login",
