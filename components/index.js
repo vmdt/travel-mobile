@@ -1,5 +1,6 @@
 import Booking from "./Booking";
 import BackButton from "./Buttons/BackButton";
+import CloseButton from "./Buttons/CloseButton";
 import ReusableBtn from "./Buttons/ReusableBtn";
 import GroupCard from "./CardItem/GroupCard";
 import SearchCard from "./CardItem/SearchCard";
@@ -24,6 +25,7 @@ export {
 	BackButton,
 	Booking,
 	CategoryButton,
+	CloseButton,
 	FilterModal,
 	GroupCard,
 	GroupListings,
