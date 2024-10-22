@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import RootNavigation from "./navigation";
 import { persistor, store } from "./redux/stores";
-import { Cart } from "./screens";
 
 export default function App() {
 	const [fontsLoaded, error] = useFonts({
@@ -30,7 +29,7 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
-				<Cart />
+				<RootNavigation />
 			</PersistGate>
 		</Provider>
 	);

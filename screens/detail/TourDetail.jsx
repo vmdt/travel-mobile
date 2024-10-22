@@ -20,11 +20,13 @@ import {
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
 import styles from "./tourDetail.style";
+import CheckAvailabilityModal from "../../components/Modal/CheckAvailabilityModal";
 
 const TourDetail = () => {
 	const route = useRoute();
 	const navigation = useNavigation();
 	const [tourData, setTourData] = useState(null);
+	const [modalVisible, setModalVisible] = useState(false);
 	const { item } = route.params;
 
 	useEffect(() => {
@@ -242,11 +244,21 @@ const TourDetail = () => {
 						/>
 					</MapView>
 
+					<CheckAvailabilityModal
+						isOpen={modalVisible}
+						onClose={() => setModalVisible(false)}
+						tourDetail={tourData}
+						guestInfo={tourData?.priceOptions}
+						totalPrice={30000000}
+						handleAddToCart={() => {}}
+						handleBookNow={() => {}}
+					/>
+
 					<HeightSpacer height={200} />
 
 					<View style={styles.buttonCheckAvail}>
 						<ReusableBtn
-							onPress={() => {}}
+							onPress={() => setModalVisible(true)}
 							btnText="Check Availability"
 							btnWidth={SIZES.full}
 							backgroundColor={COLORS.lightGreen}
