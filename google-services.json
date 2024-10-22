@@ -1,0 +1,29 @@
+{
+	"project_info": {
+		"project_number": "184445037077",
+		"project_id": "travelife-1e937",
+		"storage_bucket": "travelife-1e937.appspot.com"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:184445037077:android:dc77ddbeefd956bb78bc1c",
+				"android_client_info": {
+					"package_name": "com.travelapp"
+				}
+			},
+			"oauth_client": [],
+			"api_key": [
+				{
+					"current_key": "AIzaSyAg4d7tE46wjtpblaKL75LvyLopRiDq9nc"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": []
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
+}

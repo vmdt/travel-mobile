@@ -37,3 +37,7 @@ yarn-error.*
 package-lock.json
 
 .idea/
+
+android/
+
+ios/
