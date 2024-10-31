@@ -1,73 +1,19 @@
-import React, { useState } from "react";
-import {
-	FlatList,
-	Image,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from "react-native";
-import { CheckBox } from "react-native-elements";
-import { ScreenWrapper } from "../../components";
-
-const formatPrice = (amount, currency) => {
-	const options = { style: "currency", currency: currency };
-	const locale = currency === "VND" ? "vi-VN" : "en-US"; // Kiểm tra loại tiền tệ để chọn locale
-	const formatter = new Intl.NumberFormat(locale, options);
-	return formatter.format(amount);
-};
-
-const cartItems = [
-	{
-		id: "1",
-		title: "Dalat: Sunrise",
-		description: "Hike the second highest mountain peek in Dalat and be...",
-		location: "DaLat - VietNam",
-		price: 1500000,
-		currency: "VND",
-		imageUrl: "https://example.com/image1.jpg",
-	},
-	{
-		id: "2",
-		title: "Dalat: Sunrise",
-		description: "Hike the second highest mountain peek in Dalat and be...",
-		location: "DaLat - VietNam",
-		price: 1100000,
-		currency: "VND",
-		imageUrl: "https://example.com/image2.jpg",
-	},
-	{
-		id: "3",
-		title: "Dalat: Sunrise",
-		description: "Hike the second highest mountain peek in Dalat and be...",
-		location: "DaLat - VietNam",
-		price: 150,
-		currency: "USD",
-		imageUrl: "https://example.com/image2.jpg",
-	},
-	{
-		id: "4",
-		title: "Dalat: Sunrise",
-		description: "Hike the second highest mountain peek in Dalat and be...",
-		location: "DaLat - VietNam",
-		price: 150,
-		currency: "USD",
-		imageUrl: "https://example.com/image2.jpg",
-	},
-	{
-		id: "5",
-		title: "Dalat: Sunrise",
-		description: "Hike the second highest mountain peek in Dalat and be...",
-		location: "DaLat - VietNam",
-		price: 110,
-		currency: "USD",
-		imageUrl: "https://example.com/image2.jpg",
-	},
-];
+import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { CheckBox, Icon } from "react-native-elements";
+import { useSelector } from "react-redux";
+import { CartAPI } from "../../api";
+import { ReusableText, ScreenWrapper } from "../../components";
+import { COLORS, SIZES } from "../../constants/theme";
+import { formatCurrency } from "../../utils";
+import styles from "./cart.style";
 
 const Cart = () => {
+	const [items, setItems] = useState([]);
 	const [selectedItems, setSelectedItems] = useState([]);
-	const [showCheckbox, setShowCheckbox] = useState(false);
+	const { accessToken } = useSelector((state) => state.auth);
+	const isFocused = useIsFocused();
 
 	const toggleSelectItem = (id) => {
 		setSelectedItems((prevSelected) => {
@@ -82,33 +28,103 @@ const Cart = () => {
 	const calculateTotalPrice = () => {
 		return (
 			selectedItems
-				.reduce((total, id) => {
-					const item = cartItems.find((item) => item.id === id);
-					const price =
-						item.currency === "VND" ? item.price : item.price * 23000;
+				.reduce((total, _id) => {
+					const item = items.find((item) => item._id === _id);
+					const price = item?.participants.reduce(
+						(acc, participant) =>
+							acc + participant.quantity * participant.price,
+						0,
+					);
 					return total + price;
 				}, 0)
-				.toLocaleString() + " VMD"
+				.toLocaleString() + " VND"
 		);
 	};
 
 	const handleSelectAll = () => {
-		if (selectedItems.length === cartItems.length) {
-			// Nếu tất cả đã được chọn, thì bỏ chọn hết
+		if (selectedItems.length === items.length) {
 			setSelectedItems([]);
 		} else {
-			// Chọn tất cả các mục
-			setSelectedItems(cartItems.map((item) => item.id));
+			setSelectedItems(items.map((item) => item._id));
 		}
 	};
 
+	const formatStartDate = (dateString) => {
+		const date = new Date(dateString);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		``;
+		const day = String(date.getDate()).padStart(2, "0");
+		return `${year}-${month}-${day}`;
+	};
+
+	useEffect(() => {
+		const fetchCartItems = async () => {
+			const response = await CartAPI.getListCart(accessToken);
+			setItems(response.metadata.cart.tours);
+		};
+		if (isFocused) {
+			fetchCartItems();
+		}
+	}, [isFocused]);
+
 	const renderItem = ({ item }) => (
 		<View style={styles.card}>
-			<Image source={{ uri: item.imageUrl }} style={styles.image} />
+			<Image source={{ uri: item?.tour?.thumbnail }} style={styles.image} />
 			<View style={styles.details}>
-				<Text style={styles.title}>{item.title}</Text>
-				<Text style={styles.description}>{item.description}</Text>
-				<Text style={styles.location}>📍 {item.location}</Text>
+				<Text style={styles.title}>{item?.tour?.title}</Text>
+				<Text>{formatStartDate(item?.startDate)}</Text>
+				<View
+					style={{
+						flexDirection: "row",
+						justifyContent: "space-between",
+						alignItems: "center",
+					}}
+				>
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<Icon name="person" size={24} color="black" />
+						<Text style={{ fontSize: 16, marginLeft: 8 }}>
+							{item.participants.length > 0
+								? item.participants
+										.map((guest) => `${guest.title} x${guest.quantity} `)
+										.join(", ")
+								: "Select participant"}
+						</Text>
+					</View>
+				</View>
+				{item?.isPrivate && item.hotels.length > 0 && (
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<Icon name="hotel" size={24} color="black" />
+						<Text style={{ fontSize: 16, marginLeft: 8 }}>
+							{item.hotels[0].name}
+						</Text>
+					</View>
+				)}
+				{item?.isPrivate && item.transports.length > 0 && (
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<Icon name="hotel" size={24} color="black" />
+						<Text style={{ fontSize: 16, marginLeft: 8 }}>
+							{item.transports[0].name}
+						</Text>
+					</View>
+				)}
+				<View
+					style={{
+						flexDirection: "row",
+						justifyContent: "space-between",
+						alignItems: "center",
+					}}
+				>
+					<Text style={{ fontSize: 16, marginLeft: 8 }}>
+						{formatCurrency(
+							item?.participants.reduce(
+								(acc, participant) =>
+									acc + participant.quantity * participant.price,
+								0,
+							),
+						)}
+					</Text>
+				</View>
 				<View style={styles.actions}>
 					<TouchableOpacity style={styles.editButton}>
 						<Text>Edit</Text>
@@ -116,13 +132,13 @@ const Cart = () => {
 					<TouchableOpacity style={styles.deleteButton}>
 						<Text>🗑️</Text>
 					</TouchableOpacity>
-					<Text style={styles.price}>{item.price}</Text>
+					<Text style={styles.price}>{item?.price}</Text>
 				</View>
 			</View>
 			<View style={styles.checkboxContainer}>
 				<CheckBox
-					checked={selectedItems.includes(item.id)}
-					onPress={() => toggleSelectItem(item.id)}
+					checked={selectedItems.includes(item?._id)}
+					onPress={() => toggleSelectItem(item?._id)}
 				/>
 			</View>
 		</View>
@@ -132,17 +148,28 @@ const Cart = () => {
 		<ScreenWrapper>
 			<View style={styles.container}>
 				<Text style={styles.header}>Booking Cart ({selectedItems.length})</Text>
-				<FlatList
-					data={cartItems}
-					renderItem={renderItem}
-					keyExtractor={(item) => item.id}
-					contentContainerStyle={styles.listContainer}
-				/>
+				{items.length === 0 ? (
+					<View style={styles.noResult}>
+						<ReusableText
+							text="No cart items"
+							family="medium"
+							size={SIZES.large}
+							color={COLORS.green}
+						/>
+					</View>
+				) : (
+					<FlatList
+						data={items}
+						renderItem={renderItem}
+						keyExtractor={(item) => item.id}
+						contentContainerStyle={styles.listContainer}
+					/>
+				)}
 				<View style={styles.footer}>
 					<TouchableOpacity onPress={handleSelectAll}>
 						<View style={styles.selectAllContainer}>
 							<Text style={styles.selectAllText}>
-								{selectedItems.length === cartItems.length
+								{selectedItems.length === items.length
 									? "Deselect all"
 									: "Select all"}
 							</Text>
@@ -157,119 +184,5 @@ const Cart = () => {
 		</ScreenWrapper>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-	},
-	header: {
-		fontSize: 20,
-		fontWeight: "bold",
-		textAlign: "center",
-		marginVertical: 16,
-	},
-	selectButton: {
-		backgroundColor: "blue",
-		padding: 10,
-		margin: 16,
-		borderRadius: 8,
-	},
-	selectButtonText: {
-		color: "#fff",
-		textAlign: "center",
-		fontSize: 16,
-		fontWeight: "bold",
-	},
-	listContainer: {
-		padding: 16,
-	},
-	card: {
-		flexDirection: "row",
-		backgroundColor: "#fff",
-		borderRadius: 8,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 1 },
-		shadowOpacity: 0.3,
-		shadowRadius: 4,
-		elevation: 5,
-		marginBottom: 16,
-		padding: 8,
-		alignItems: "center",
-	},
-	image: {
-		width: 100,
-		height: 100,
-		borderRadius: 8,
-		marginLeft: 8,
-	},
-	details: {
-		flex: 1,
-		paddingLeft: 12,
-	},
-	title: {
-		fontSize: 16,
-		fontWeight: "bold",
-	},
-	description: {
-		fontSize: 14,
-		color: "#666",
-	},
-	location: {
-		fontSize: 12,
-		color: "#888",
-		marginVertical: 4,
-	},
-	actions: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginTop: 8,
-	},
-	editButton: {
-		marginRight: 12,
-	},
-	deleteButton: {
-		marginRight: 12,
-	},
-	price: {
-		marginLeft: "auto",
-		fontSize: 16,
-		fontWeight: "bold",
-	},
-	checkboxContainer: {
-		marginLeft: 16,
-	},
-	footer: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-		padding: 16,
-		borderTopWidth: 1,
-		borderColor: "#ddd",
-		paddingBottom: 110,
-	},
-	selectAllContainer: {
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	selectAllText: {
-		marginLeft: 8,
-	},
-	totalPrice: {
-		fontSize: 18,
-		fontWeight: "bold",
-	},
-	checkoutButton: {
-		backgroundColor: "red",
-		paddingVertical: 12,
-		paddingHorizontal: 24,
-		borderRadius: 8,
-	},
-	checkoutText: {
-		color: "#fff",
-		fontSize: 16,
-		fontWeight: "bold",
-	},
-});
 
 export default Cart;

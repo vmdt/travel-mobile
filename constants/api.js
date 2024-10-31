@@ -1,4 +1,4 @@
-const BASE_URL = "https://ecec-118-70-102-149.ngrok-free.app/api/v1";
+const BASE_URL = "http://172.16.126.1:4001/api/v1";
 
 const AUTH_ENDPOINTS = {
 	LOGIN: "/auth/login",
@@ -22,9 +22,14 @@ const SEARCH_ENDPOINTS = {
 	SEARCH: "/search/tours",
 };
 
+const CART_ENDPOINTS = {
+	GET_LIST_CART: "/carts",
+};
+
 export {
 	AUTH_ENDPOINTS,
 	BASE_URL,
+	CART_ENDPOINTS,
 	CATEGORY_ENDPOINTS,
 	SEARCH_ENDPOINTS,
 	TOUR_ENDPOINTS,
