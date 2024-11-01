@@ -8,19 +8,19 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView from "react-native-maps";
+import { Marker } from "react-native-svg";
 import Swiper from "react-native-swiper";
 import { TourAPI } from "../../api";
 import {
 	BackButton,
-	HeightSpacer,
+	CheckAvailabilityModal,
 	ReusableBtn,
 	ReusableText,
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
 import styles from "./tourDetail.style";
-import CheckAvailabilityModal from "../../components/Modal/CheckAvailabilityModal";
 
 const TourDetail = () => {
 	const route = useRoute();
@@ -58,221 +58,245 @@ const TourDetail = () => {
 	if (!tourData) return <ScreenWrapper></ScreenWrapper>;
 
 	return (
-		<>
-			<ScrollView>
-				<View style={{ height: 300 }}>
-					<Swiper
-						autoplay={true}
-						showsPagination={false}
-						style={{ height: 300 }}
-					>
-						{tourData?.images?.map((image, index) => (
-							<ImageBackground
-								key={index}
-								source={{ uri: image }}
-								style={{ width: "100%", height: 300 }}
-							>
-								<ScreenWrapper>
-									<View style={styles.container}>
-										<View
-											style={{
-												flexDirection: "row",
-												justifyContent: "space-between",
-												alignItems: "center",
-											}}
-										>
-											<BackButton
-												size={SIZES.xLarge}
-												onPress={() => navigation.goBack()}
-											/>
+		<View style={styles.container}>
+			{/* <Text style={styles.header}>Booking Cart</Text> */}
+			<View style={styles.body}>
+				<ScrollView>
+					<View style={{ height: 300 }}>
+						<Swiper
+							autoplay={true}
+							showsPagination={false}
+							style={{ height: 300 }}
+						>
+							{tourData?.images?.map((image, index) => (
+								<ImageBackground
+									key={index}
+									source={{ uri: image }}
+									style={{ width: "100%", height: 300 }}
+								>
+									<ScreenWrapper>
+										<View style={styles.imageContainer}>
+											<View
+												style={{
+													flexDirection: "row",
+													justifyContent: "space-between",
+													alignItems: "center",
+												}}
+											>
+												<BackButton
+													size={SIZES.xLarge}
+													onPress={() => navigation.goBack()}
+												/>
 
-											<View>
-												<TouchableOpacity
-													style={{
-														backgroundColor: COLORS.lightWhite,
-														padding: 5,
-														borderRadius: 10,
-													}}
-												>
-													<Ionicons
-														name="bookmark-outline"
-														size={24}
-														color={COLORS.black}
-													/>
-												</TouchableOpacity>
+												<View>
+													<TouchableOpacity
+														style={{
+															backgroundColor: COLORS.lightWhite,
+															padding: 5,
+															borderRadius: 10,
+														}}
+													>
+														<Ionicons
+															name="bookmark-outline"
+															size={24}
+															color={COLORS.black}
+														/>
+													</TouchableOpacity>
+												</View>
 											</View>
 										</View>
-									</View>
-								</ScreenWrapper>
-							</ImageBackground>
-						))}
-					</Swiper>
-				</View>
-				<View style={styles.detailsContainer}>
-					<ReusableText
-						text={tourData?.title}
-						size={SIZES.xLarge}
-						family="xtrabold"
-					/>
-					<View
-						style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}
-					>
-						<Ionicons name="star" size={16} color={COLORS.green} />
-						<ReusableText
-							text={tourData?.ratingAverage ?? 4.5}
-							family="regular"
-							size={14}
-							color={COLORS.green}
-						/>
-						<ReusableText
-							text={` (${tourData?.numOfRating ?? 0})`}
-							family="regular"
-							size={14}
-							color={COLORS.black}
-						/>
+									</ScreenWrapper>
+								</ImageBackground>
+							))}
+						</Swiper>
 					</View>
-
-					<View
-						style={{
-							flexDirection: "row",
-							alignItems: "center",
-							marginTop: 5,
-							justifyContent: "space-between",
-						}}
-					>
-						<View style={{ flexDirection: "row", gap: 5 }}>
+					<View style={styles.detailsContainer}>
+						<ReusableText
+							text={tourData?.title}
+							size={SIZES.xLarge}
+							family="xtrabold"
+						/>
+						<View
+							style={{
+								flexDirection: "row",
+								alignItems: "center",
+								marginTop: 5,
+							}}
+						>
+							<Ionicons name="star" size={16} color={COLORS.green} />
 							<ReusableText
-								text="From"
-								size={SIZES.medium}
-								family="bold"
-								style={{ marginTop: 10, alignSelf: "center" }}
-							/>
-
-							<ReusableText
-								text={`$${tourData?.regularPrice}`}
-								size={SIZES.large}
+								text={tourData?.ratingAverage ?? 4.5}
+								family="regular"
+								size={14}
 								color={COLORS.green}
-								family="bold"
-								style={{ marginTop: 10, alignSelf: "center" }}
 							/>
-
 							<ReusableText
-								text="per person"
-								size={SIZES.medium}
-								family="bold"
-								style={{ marginTop: 10, alignSelf: "center" }}
+								text={` (${tourData?.numOfRating ?? 0})`}
+								family="regular"
+								size={14}
+								color={COLORS.black}
 							/>
 						</View>
 
 						<View
 							style={{
-								backgroundColor: COLORS.red,
-								borderRadius: 5,
-								paddingVertical: 5,
-								paddingHorizontal: 10,
+								flexDirection: "row",
 								alignItems: "center",
+								marginTop: 5,
+								justifyContent: "space-between",
 							}}
 						>
-							<ReusableText
-								text={
-									tourData?.ratingAverage > 4.7
-										? "Likely to sell out"
-										: "Best Choice"
-								}
-								family="bold"
-								size={14}
-								color={COLORS.white}
-							/>
+							<View style={{ flexDirection: "row", gap: 5 }}>
+								<ReusableText
+									text="From"
+									size={SIZES.medium}
+									family="bold"
+									style={{ marginTop: 10, alignSelf: "center" }}
+								/>
+
+								<ReusableText
+									text={`$${tourData?.regularPrice}`}
+									size={SIZES.large}
+									color={COLORS.green}
+									family="bold"
+									style={{ marginTop: 10, alignSelf: "center" }}
+								/>
+
+								<ReusableText
+									text="per person"
+									size={SIZES.medium}
+									family="bold"
+									style={{ marginTop: 10, alignSelf: "center" }}
+								/>
+							</View>
+
+							<View
+								style={{
+									backgroundColor: COLORS.red,
+									borderRadius: 5,
+									paddingVertical: 5,
+									paddingHorizontal: 10,
+									alignItems: "center",
+								}}
+							>
+								<ReusableText
+									text={
+										tourData?.ratingAverage > 4.7
+											? "Likely to sell out"
+											: "Best Choice"
+									}
+									family="bold"
+									size={14}
+									color={COLORS.white}
+								/>
+							</View>
 						</View>
-					</View>
 
-					<ReusableText
-						text={tourData?.description ?? tourData?.summary}
-						size={SIZES.small}
-						style={{ marginTop: 10 }}
-					/>
-
-					<ReusableText
-						text="Inclusions: "
-						size={SIZES.medium}
-						family="bold"
-						style={{ marginTop: 20 }}
-					/>
-					<ScrollView horizontal={true}>
-						<FlatList
-							data={tourData?.inclusions}
-							renderItem={({ item }) => renderItem({ item, isInclusion: true })}
+						<ReusableText
+							text={tourData?.description ?? tourData?.summary}
+							size={SIZES.small}
+							style={{ marginTop: 10 }}
 						/>
-					</ScrollView>
 
-					<ReusableText
-						text="Exclustions: "
-						size={SIZES.medium}
-						family="bold"
-						style={{ marginTop: 20 }}
-					/>
-					<ScrollView horizontal={true}>
-						<FlatList
-							data={tourData?.exclusions}
-							renderItem={({ item }) =>
-								renderItem({ item, isInclusion: false })
-							}
+						<ReusableText
+							text="Inclusions: "
+							size={SIZES.medium}
+							family="bold"
+							style={{ marginTop: 20 }}
 						/>
-					</ScrollView>
+						<ScrollView horizontal={true}>
+							<FlatList
+								data={tourData?.inclusions}
+								renderItem={({ item }) =>
+									renderItem({ item, isInclusion: true })
+								}
+							/>
+						</ScrollView>
 
-					<ReusableText
-						text="Location: "
-						size={SIZES.medium}
-						family="bold"
-						style={{ marginTop: 20 }}
-					/>
-					<MapView
-						style={{ height: 200, marginVertical: 10 }}
-						initialRegion={{
-							latitude: tourData?.startLocation?.coordinates[1],
-							longitude: tourData?.startLocation?.coordinates[0],
-							latitudeDelta: 0.05,
-							longitudeDelta: 0.05,
-						}}
-					>
-						<Marker
-							coordinate={{
+						<ReusableText
+							text="Exclustions: "
+							size={SIZES.medium}
+							family="bold"
+							style={{ marginTop: 20 }}
+						/>
+						<ScrollView horizontal={true}>
+							<FlatList
+								data={tourData?.exclusions}
+								renderItem={({ item }) =>
+									renderItem({ item, isInclusion: false })
+								}
+							/>
+						</ScrollView>
+
+						<ReusableText
+							text="Location: "
+							size={SIZES.medium}
+							family="bold"
+							style={{ marginTop: 20 }}
+						/>
+
+						<MapView
+							style={{ height: 200, marginVertical: 10 }}
+							initialRegion={{
 								latitude: tourData?.startLocation?.coordinates[1],
 								longitude: tourData?.startLocation?.coordinates[0],
+								latitudeDelta: 0.05,
+								longitudeDelta: 0.05,
 							}}
-							title={tourData?.title}
+						>
+							<Marker
+								coordinate={{
+									latitude: tourData?.startLocation?.coordinates[1],
+									longitude: tourData?.startLocation?.coordinates[0],
+								}}
+								title={tourData?.title}
+							/>
+						</MapView>
+
+						<CheckAvailabilityModal
+							isOpen={modalVisible}
+							onClose={() => setModalVisible(false)}
+							tourDetail={tourData}
+							guestInfo={tourData?.priceOptions}
+							totalPrice={30000000}
+							handleAddToCart={() => {}}
+							handleBookNow={() => {}}
 						/>
-					</MapView>
-
-					<CheckAvailabilityModal
-						isOpen={modalVisible}
-						onClose={() => setModalVisible(false)}
-						tourDetail={tourData}
-						guestInfo={tourData?.priceOptions}
-						totalPrice={30000000}
-						handleAddToCart={() => {}}
-						handleBookNow={() => {}}
-					/>
-
-					<HeightSpacer height={200} />
-
-					<View style={styles.buttonCheckAvail}>
-						<ReusableBtn
-							onPress={() => setModalVisible(true)}
-							btnText="Check Availability"
-							btnWidth={SIZES.full}
-							backgroundColor={COLORS.lightGreen}
-							textColor={COLORS.white}
-							styleBtn={{ height: 60 }}
-							styleText={{
-								fontSize: SIZES.xLarge,
-								fontFamily: "xtrabold",
-							}}
+					</View>
+				</ScrollView>
+			</View>
+			<View style={styles.footer}>
+				<View style={{ flexDirection: "column" }}>
+					<ReusableText text={`From:`} family={"xtrabold"} size={SIZES.large} />
+					<View style={{ flexDirection: "row", alignItems: "center" }}>
+						<ReusableText
+							text={`${tourData?.regularPrice}`}
+							family={"xtrabold"}
+							size={SIZES.large + 5}
+							color={COLORS.green}
+						/>
+						<ReusableText
+							text={` per person`}
+							family={"xtrabold"}
+							size={SIZES.large}
 						/>
 					</View>
 				</View>
-			</ScrollView>
-		</>
+				<ReusableBtn
+					onPress={() => setModalVisible(true)}
+					btnText="Check Availability"
+					btnWidth={150}
+					backgroundColor={COLORS.lightGreen}
+					textColor={COLORS.white}
+					styleBtn={{ height: 60 }}
+					styleText={{
+						fontSize: SIZES.xLarge,
+						fontFamily: "xtrabold",
+					}}
+				/>
+			</View>
+		</View>
+		// </ScreenWrapper>
 	);
 };
 

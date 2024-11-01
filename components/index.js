@@ -12,6 +12,7 @@ import Password from "./Input/Password";
 import SearchInput from "./Input/SearchInput";
 import GroupListings from "./Listing/GroupListings";
 import Listings from "./Listing/Listings";
+import CheckAvailabilityModal from "./Modal/CheckAvailabilityModal";
 import FilterModal from "./Modal/FilterModal";
 import Slides from "./Onboard/Slides";
 import ProfileDetails from "./ProfileDetails";
@@ -25,6 +26,7 @@ export {
 	BackButton,
 	Booking,
 	CategoryButton,
+	CheckAvailabilityModal,
 	CloseButton,
 	FilterModal,
 	GroupCard,

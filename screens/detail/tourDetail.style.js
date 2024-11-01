@@ -3,11 +3,16 @@ import { COLORS, SIZES } from "../../constants/theme";
 
 const styles = StyleSheet.create({
 	container: {
+		// padding: 20,
+		flex: 1,
+	},
+	imageContainer: {
 		padding: 20,
 	},
 	detailsContainer: {
 		padding: 20,
-		backgroundColor: COLORS.white,
+		flex: 1,
+		// backgroundColor: COLORS.white,
 	},
 	title: {
 		fontSize: SIZES.large,
@@ -43,15 +48,44 @@ const styles = StyleSheet.create({
 		color: COLORS.white,
 		fontWeight: "bold",
 	},
-	buttonCheckAvail: {
-		position: "absolute",
-		bottom: 20,
-		left: 0,
-		right: 0,
-		backgroundColor: COLORS.white,
-		padding: 20,
+	footer: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		padding: 16,
 		borderTopWidth: 1,
-		borderTopColor: COLORS.gray,
+		borderColor: "#ddd",
+		paddingBottom: 20,
+	},
+	header: {
+		fontSize: 20,
+		fontWeight: "bold",
+		textAlign: "center",
+		marginVertical: 16,
+	},
+	selectAllContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	selectAllText: {
+		marginLeft: 8,
+	},
+	checkoutButton: {
+		backgroundColor: "red",
+		paddingVertical: 12,
+		paddingHorizontal: 24,
+		borderRadius: 8,
+	},
+	checkoutText: {
+		color: "#fff",
+		fontSize: 16,
+		fontWeight: "bold",
+	},
+	body: {
+		flex: 1,
+		// paddingTop: 20,
+		justifyContent: "center",
+		alignItems: "center",
 	},
 });
 
