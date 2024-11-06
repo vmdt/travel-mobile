@@ -87,6 +87,13 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 	},
+	tabBarStyle: {
+		backgroundColor: COLORS.white,
+		borderBlockEndColor: 30,
+	},
+	tabBarIndicatorStyle: {
+		backgroundColor: COLORS.lightGreen,
+	},
 });
 
 export default styles;
