@@ -135,7 +135,14 @@ const TourDetail = () => {
 						/>
 					</View>
 
-					<View style={{ height: "auto", marginTop: 10, marginBottom: 50 }}>
+					<View
+						style={{
+							height: "auto",
+							marginTop: 10,
+							marginBottom: 50,
+							display: "flex",
+						}}
+					>
 						<Tab.Navigator
 							screenOptions={({ route }) => ({
 								tabBarIndicatorStyle: styles.tabBarIndicatorStyle,

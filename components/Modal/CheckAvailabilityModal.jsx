@@ -82,7 +82,7 @@ const CheckAvailabilityModal = ({
 					title: type,
 					quantity: quantity,
 					price: price,
-					currency: tourDetail?.priceOptions[0].currency,
+					currency: tourDetail?.priceOptions[0]?.currency ?? "VND",
 				};
 				setGuestInfo((prevGuestInfo) => [...prevGuestInfo, newGuest]);
 			}
@@ -169,10 +169,10 @@ const CheckAvailabilityModal = ({
 									{tourDetail?.priceOptions &&
 										tourDetail?.priceOptions.map((participant) => (
 											<MenuItem
-												key={participant._id}
-												type={participant.title}
-												price={participant.value}
-												currency={participant.currency}
+												key={participant?._id}
+												type={participant?.title}
+												price={participant?.value}
+												currency={participant?.currency}
 												setPrice={setPrice}
 												setType={setType}
 												setQuantity={setQuantity}
@@ -238,17 +238,17 @@ const CheckAvailabilityModal = ({
 											" " +
 											guest.quantity +
 											" x " +
-											formatCurrency(guest.price, guest.currency)
+											formatCurrency(guest.price, guest?.currency)
 										}
 										size={16}
 										family={"regular"}
 									/>
 									<ReusableText
 										text={
-											guest.price &&
+											guest?.price &&
 											formatCurrency(
-												guest.price * guest.quantity,
-												guest.currency,
+												guest?.price * guest?.quantity,
+												guest?.currency,
 											)
 										}
 										size={16}
@@ -264,8 +264,8 @@ const CheckAvailabilityModal = ({
 								<ReusableText
 									text={
 										totalPrice !== 0
-											? `${formatCurrency(totalPrice, tourDetail?.priceOptions[0].currency)}`
-											: `0 ${tourDetail?.priceOptions[0].currency}`
+											? `${formatCurrency(totalPrice, tourDetail?.priceOptions[0]?.currency)}`
+											: `0 ${tourDetail?.priceOptions[0]?.currency}`
 									}
 									size={18}
 									family="bold"

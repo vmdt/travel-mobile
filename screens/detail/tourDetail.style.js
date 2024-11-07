@@ -13,6 +13,8 @@ const styles = StyleSheet.create({
 		padding: 20,
 		flex: 1,
 		// backgroundColor: COLORS.white,
+		// width: SIZES.width,
+		width: "auto",
 	},
 	title: {
 		fontSize: SIZES.large,
@@ -83,13 +85,15 @@ const styles = StyleSheet.create({
 	},
 	body: {
 		flex: 1,
+		width: SIZES.width,
 		// paddingTop: 20,
-		justifyContent: "center",
-		alignItems: "center",
+		justifyContent: "flex-start",
+		alignItems: "flex-start",
 	},
 	tabBarStyle: {
 		backgroundColor: COLORS.white,
 		borderBlockEndColor: 30,
+		width: SIZES.width - 40,
 	},
 	tabBarIndicatorStyle: {
 		backgroundColor: COLORS.lightGreen,

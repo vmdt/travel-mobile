@@ -8,7 +8,7 @@ import { COLORS, SIZES } from "../../constants/theme";
 
 const InfoDetails = ({ tourData }) => {
 	const renderItem = ({ item, isInclusion }) => (
-		<View style={{ flexDirection: "row", alignItems: "center" }}>
+		<View style={{ flexDirection: "row" }}>
 			{isInclusion ? (
 				<Ionicons name="checkmark" size={16} color={COLORS.green} />
 			) : (
