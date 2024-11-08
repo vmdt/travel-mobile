@@ -14,3 +14,36 @@ export const getListCart = async (token) => {
 		// TODO: Handle error
 	}
 };
+
+export const addToCart = async (data, token) => {
+	try {
+		const response = await api.post(CART_ENDPOINTS.ADD_TO_CART, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.log("error.response: ", error.response.data);
+		// TODO: Handle error
+	}
+};
+
+export const deleteCartItem = async ({ cartId, itemId }, token) => {
+	try {
+		const response = await api.delete(CART_ENDPOINTS.DELETE_CART_ITEMS, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			data: {
+				cart: cartId,
+				itemId,
+			},
+		});
+
+		return response.data;
+	} catch (error) {
+		console.log("error: ", error.response.data);
+		// TODO: Handle error
+	}
+};

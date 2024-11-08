@@ -2,8 +2,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ImageBackground, TouchableOpacity, View } from "react-native";
+import { Alert, ImageBackground, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-swiper";
+import { useDispatch, useSelector } from "react-redux";
 import { TourAPI } from "../../api";
 import {
 	BackButton,
@@ -14,6 +15,7 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { addToCart } from "../../redux/actions/cartAction";
 import InfoDetails from "./InfoDetails";
 import styles from "./tourDetail.style";
 
@@ -22,9 +24,11 @@ const Tab = createMaterialTopTabNavigator();
 const TourDetail = () => {
 	const route = useRoute();
 	const navigation = useNavigation();
+	const dispatch = useDispatch();
 	const [tourData, setTourData] = useState(null);
 	const [modalVisible, setModalVisible] = useState(false);
 	const { item } = route.params;
+	const { user, accessToken } = useSelector((state) => state.auth);
 
 	useEffect(() => {
 		const fetchTourData = async () => {
@@ -35,28 +39,31 @@ const TourDetail = () => {
 		fetchTourData();
 	}, [item?._id]);
 
-	const renderItem = ({ item, isInclusion }) => (
-		<View style={{ flexDirection: "row", alignItems: "center" }}>
-			{isInclusion ? (
-				<Ionicons name="checkmark" size={16} color={COLORS.green} />
-			) : (
-				<Ionicons name="close" size={16} color={COLORS.red} />
-			)}
+	const handleAddToCart = ({ startDate, participants, privateData = {} }) => {
+		const dataCart = {
+			user: user?._id,
+			tour: {
+				tour: tourData?._id,
+				startDate,
+				startTime: "08:00",
+				participants,
+				...privateData,
+			},
+		};
 
-			<ReusableText
-				text={item}
-				family="regular"
-				size={SIZES.small}
-				style={{ marginLeft: 5 }}
-			/>
-		</View>
-	);
+		dispatch(addToCart(dataCart, accessToken));
+
+		Alert.alert("Success", "Tour has been added to cart successfully!", [
+			{ text: "OK" },
+		]);
+
+		// setModalVisible(false);
+	};
 
 	if (!tourData) return <ScreenWrapper></ScreenWrapper>;
 
 	return (
 		<View style={styles.container}>
-			{/* <Text style={styles.header}>Booking Cart</Text> */}
 			<View style={styles.body}>
 				{/* <ScrollView> */}
 				<View style={{ height: 230 }}>
@@ -173,7 +180,7 @@ const TourDetail = () => {
 						tourDetail={tourData}
 						guestInfo={tourData?.priceOptions}
 						totalPrice={30000000}
-						handleAddToCart={() => {}}
+						handleAddToCart={handleAddToCart}
 						handleBookNow={() => {}}
 					/>
 				</View>

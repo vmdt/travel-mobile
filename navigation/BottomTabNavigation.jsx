@@ -1,13 +1,16 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import { COLORS } from "../constants/theme";
 import { Cart, Home, Profile } from "../screens";
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigation = () => {
+	const { cartItems } = useSelector((state) => state.cart);
+
 	return (
 		<Tab.Navigator
 			initialRouteName="Home"
@@ -26,7 +29,16 @@ const BottomTabNavigation = () => {
 							iconName = focused ? "person" : "person-outline";
 							break;
 					}
-					return <Ionicons name={iconName} size={size} color={color} />;
+					return (
+						<>
+							<Ionicons name={iconName} size={size} color={color} />
+							{route.name === "Cart" && cartItems > 0 && (
+								<View style={styles.badge}>
+									<Text style={styles.badgeText}>{cartItems}</Text>
+								</View>
+							)}
+						</>
+					);
 				},
 				tabBarLabel: () => null,
 				tabBarStyle: styles.tabBarStyle,
@@ -74,6 +86,23 @@ const styles = StyleSheet.create({
 		margin: 10,
 		borderRadius: 40,
 		height: "100%",
+	},
+	badge: {
+		position: "absolute",
+		top: -5,
+		right: 25,
+		backgroundColor: "red",
+		borderRadius: 10,
+		minWidth: 20,
+		height: 20,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	badgeText: {
+		color: "white",
+		fontSize: 12,
+		fontWeight: "bold",
+		paddingHorizontal: 5,
 	},
 });
 

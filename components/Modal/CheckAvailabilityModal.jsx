@@ -41,7 +41,6 @@ const CheckAvailabilityModal = ({
 	handleBookNow,
 	isLoading = false,
 }) => {
-	console.log(tourDetail.priceOptions);
 	const [price, setPrice] = useState(0);
 	const [quantity, setQuantity] = useState(0);
 	const [type, setType] = useState("");
@@ -275,7 +274,12 @@ const CheckAvailabilityModal = ({
 						<View style={styles.buttonContainer}>
 							<TouchableOpacity
 								style={styles.button}
-								onPress={handleAddToCart}
+								onPress={() => {
+									handleAddToCart({
+										startDate: convertedDate,
+										participants: guestInfo,
+									});
+								}}
 								disabled={isLoading}
 							>
 								{isLoading ? (

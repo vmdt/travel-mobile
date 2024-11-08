@@ -24,6 +24,8 @@ const SEARCH_ENDPOINTS = {
 
 const CART_ENDPOINTS = {
 	GET_LIST_CART: "/carts",
+	ADD_TO_CART: "/carts",
+	DELETE_CART_ITEMS: "/carts",
 };
 
 export {

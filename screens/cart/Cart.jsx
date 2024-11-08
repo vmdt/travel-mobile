@@ -2,10 +2,10 @@ import { useIsFocused } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
-import { useSelector } from "react-redux";
-import { CartAPI } from "../../api";
+import { useDispatch, useSelector } from "react-redux";
 import { ReusableText, ScreenWrapper } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { deleteCartItem, getListCart } from "../../redux/actions/cartAction";
 import { formatCurrency } from "../../utils";
 import styles from "./cart.style";
 
@@ -14,6 +14,8 @@ const Cart = () => {
 	const [selectedItems, setSelectedItems] = useState([]);
 	const { accessToken } = useSelector((state) => state.auth);
 	const isFocused = useIsFocused();
+	const dispatch = useDispatch();
+	const { cart } = useSelector((state) => state.cart);
 
 	const toggleSelectItem = (id) => {
 		setSelectedItems((prevSelected) => {
@@ -42,7 +44,7 @@ const Cart = () => {
 	};
 
 	const handleSelectAll = () => {
-		if (selectedItems.length === items.length) {
+		if (selectedItems?.length === items?.length) {
 			setSelectedItems([]);
 		} else {
 			setSelectedItems(items.map((item) => item._id));
@@ -59,14 +61,16 @@ const Cart = () => {
 	};
 
 	useEffect(() => {
-		const fetchCartItems = async () => {
-			const response = await CartAPI.getListCart(accessToken);
-			setItems(response.metadata.cart.tours);
-		};
 		if (isFocused) {
-			fetchCartItems();
+			dispatch(getListCart(accessToken));
 		}
 	}, [isFocused]);
+
+	useEffect(() => {
+		if (cart?.tours) {
+			setItems(cart.tours);
+		}
+	}, [cart?.tours]);
 
 	const renderItem = ({ item }) => (
 		<View style={styles.card}>
@@ -84,15 +88,15 @@ const Cart = () => {
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
 						<Icon name="person" size={24} color="black" />
 						<Text style={{ fontSize: 16, marginLeft: 8 }}>
-							{item.participants.length > 0
-								? item.participants
-										.map((guest) => `${guest.title} x${guest.quantity} `)
+							{item?.participants?.length > 0
+								? item?.participants
+										.map((guest) => `${guest?.title} x${guest?.quantity} `)
 										.join(", ")
 								: "Select participant"}
 						</Text>
 					</View>
 				</View>
-				{item?.isPrivate && item.hotels.length > 0 && (
+				{item?.isPrivate && item.hotels?.length > 0 && (
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
 						<Icon name="hotel" size={24} color="black" />
 						<Text style={{ fontSize: 16, marginLeft: 8 }}>
@@ -100,7 +104,7 @@ const Cart = () => {
 						</Text>
 					</View>
 				)}
-				{item?.isPrivate && item.transports.length > 0 && (
+				{item?.isPrivate && item.transports?.length > 0 && (
 					<View style={{ flexDirection: "row", alignItems: "center" }}>
 						<Icon name="hotel" size={24} color="black" />
 						<Text style={{ fontSize: 16, marginLeft: 8 }}>
@@ -129,7 +133,21 @@ const Cart = () => {
 					<TouchableOpacity style={styles.editButton}>
 						<Text>Edit</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.deleteButton}>
+					<TouchableOpacity
+						style={styles.deleteButton}
+						onPress={async () => {
+							await dispatch(
+								deleteCartItem(
+									{
+										cartId: cart._id,
+										itemId: item._id,
+									},
+									accessToken,
+								),
+							);
+							setItems((prev) => prev.filter((i) => i._id !== item._id));
+						}}
+					>
 						<Text>🗑️</Text>
 					</TouchableOpacity>
 					<Text style={styles.price}>{item?.price}</Text>
@@ -147,8 +165,10 @@ const Cart = () => {
 	return (
 		<ScreenWrapper>
 			<View style={styles.container}>
-				<Text style={styles.header}>Booking Cart ({selectedItems.length})</Text>
-				{items.length === 0 ? (
+				<Text style={styles.header}>
+					Booking Cart ({selectedItems?.length})
+				</Text>
+				{items?.length === 0 ? (
 					<View style={styles.noResult}>
 						<ReusableText
 							text="No cart items"
@@ -161,7 +181,7 @@ const Cart = () => {
 					<FlatList
 						data={items}
 						renderItem={renderItem}
-						keyExtractor={(item) => item.id}
+						keyExtractor={(item) => item._id}
 						contentContainerStyle={styles.listContainer}
 					/>
 				)}
@@ -169,7 +189,7 @@ const Cart = () => {
 					<TouchableOpacity onPress={handleSelectAll}>
 						<View style={styles.selectAllContainer}>
 							<Text style={styles.selectAllText}>
-								{selectedItems.length === items.length
+								{selectedItems?.length === items?.length
 									? "Deselect all"
 									: "Select all"}
 							</Text>
