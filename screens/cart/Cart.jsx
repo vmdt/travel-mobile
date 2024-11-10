@@ -3,19 +3,60 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
-import { ReusableText, ScreenWrapper } from "../../components";
+import { TourAPI } from "../../api";
+import {
+	CheckAvailabilityModal,
+	ReusableText,
+	ScreenWrapper,
+} from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
-import { deleteCartItem, getListCart } from "../../redux/actions/cartAction";
+import {
+	deleteCartItem,
+	getListCart,
+	updateCartItem,
+} from "../../redux/actions/cartAction";
 import { formatCurrency } from "../../utils";
 import styles from "./cart.style";
 
 const Cart = () => {
 	const [items, setItems] = useState([]);
 	const [selectedItems, setSelectedItems] = useState([]);
+	const [modalVisible, setModalVisible] = useState(false);
+	const [selectedTourData, setSelectedTourData] = useState(null);
 	const { accessToken } = useSelector((state) => state.auth);
 	const isFocused = useIsFocused();
 	const dispatch = useDispatch();
 	const { cart } = useSelector((state) => state.cart);
+	const { user } = useSelector((state) => state.auth);
+
+	const [editingItem, setEditingItem] = useState(null);
+
+	const handleUpdateItem = ({ itemId, startDate, participants }) => {
+		const updateData = {
+			user: user?._id,
+			tour: {
+				itemId,
+				startDate,
+				participants,
+			},
+		};
+
+		dispatch(updateCartItem(updateData, accessToken));
+		setItems((prev) =>
+			prev.map((item) => {
+				if (item._id === itemId) {
+					return {
+						...item,
+						startDate,
+						participants,
+					};
+				}
+				return item;
+			}),
+		);
+
+		setModalVisible(false);
+	};
 
 	const toggleSelectItem = (id) => {
 		setSelectedItems((prevSelected) => {
@@ -130,8 +171,26 @@ const Cart = () => {
 					</Text>
 				</View>
 				<View style={styles.actions}>
-					<TouchableOpacity style={styles.editButton}>
+					<TouchableOpacity
+						style={styles.editButton}
+						onPress={async () => {
+							const tourResponse = await TourAPI.getTourById(item.tour._id);
+							setSelectedTourData(tourResponse.metadata);
+							setEditingItem(item);
+							setModalVisible(true);
+						}}
+					>
 						<Text>Edit</Text>
+						<CheckAvailabilityModal
+							isOpen={modalVisible}
+							onClose={() => {
+								setModalVisible(false);
+								setEditingItem(null);
+							}}
+							tourDetail={selectedTourData}
+							editingItem={editingItem}
+							handleUpdateItem={handleUpdateItem}
+						/>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={styles.deleteButton}

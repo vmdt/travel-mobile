@@ -12,6 +12,7 @@ export const getListCart = async (token) => {
 	} catch (error) {
 		console.log("error: ", error);
 		// TODO: Handle error
+		return error;
 	}
 };
 
@@ -26,6 +27,7 @@ export const addToCart = async (data, token) => {
 	} catch (error) {
 		console.log("error.response: ", error.response.data);
 		// TODO: Handle error
+		return error;
 	}
 };
 
@@ -44,6 +46,22 @@ export const deleteCartItem = async ({ cartId, itemId }, token) => {
 		return response.data;
 	} catch (error) {
 		console.log("error: ", error.response.data);
+		// TODO: Handle error
+		return error;
+	}
+};
+
+export const updateCartItem = async (data, token) => {
+	try {
+		const response = await api.post(CART_ENDPOINTS.UPDATE_CART_ITEM, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		return response.data;
+	} catch (error) {
+		console.log("error.response: ", error.response.data);
 		// TODO: Handle error
 	}
 };

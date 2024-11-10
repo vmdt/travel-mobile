@@ -3,6 +3,7 @@ import {
 	ADD_TO_CART_FAILURE,
 	DELETE_CART_ITEMS,
 	GET_LIST_CART,
+	UPDATE_CART_ITEM,
 } from "../constants";
 
 const initialState = {
@@ -21,6 +22,10 @@ const cartReducer = (state = initialState, action) => {
 			return {
 				...state,
 				cartItems: state.cartItems + 1,
+			};
+		case UPDATE_CART_ITEM:
+			return {
+				...state,
 			};
 		case DELETE_CART_ITEMS:
 			return {

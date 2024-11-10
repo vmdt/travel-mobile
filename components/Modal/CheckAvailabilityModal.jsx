@@ -40,6 +40,8 @@ const CheckAvailabilityModal = ({
 	handleAddToCart,
 	handleBookNow,
 	isLoading = false,
+	editingItem,
+	handleUpdateItem,
 }) => {
 	const [price, setPrice] = useState(0);
 	const [quantity, setQuantity] = useState(0);
@@ -59,6 +61,13 @@ const CheckAvailabilityModal = ({
 		setIsDropdownParticipantVisible(!isDropdownParticipantVisible);
 	const toggleDropdownCalendar = () =>
 		setIsDropdownCalendarVisible(!isDropdownCalendarVisible);
+
+	useEffect(() => {
+		if (editingItem) {
+			setGuestInfo(editingItem?.participants);
+			setSelectedDate(new Date(editingItem?.startDate));
+		}
+	}, [editingItem]);
 
 	useEffect(() => {
 		if (!initialMount) {
@@ -124,7 +133,7 @@ const CheckAvailabilityModal = ({
 			animationType="slide"
 			transparent={true}
 			visible={isOpen}
-			onRequestClose={onClose}
+			onClose={onClose}
 		>
 			<View style={styles.modalBackGround}>
 				<ScrollView>
@@ -172,6 +181,12 @@ const CheckAvailabilityModal = ({
 												type={participant?.title}
 												price={participant?.value}
 												currency={participant?.currency}
+												quantity={() => {
+													const existingGuest = guestInfo.find(
+														(obj) => obj.title === participant?.title,
+													);
+													return existingGuest?.quantity ?? 0;
+												}}
 												setPrice={setPrice}
 												setType={setType}
 												setQuantity={setQuantity}
@@ -218,6 +233,10 @@ const CheckAvailabilityModal = ({
 											fontSize: 14,
 											color: COLORS.black,
 										}}
+										{...(selectedDate && {
+											selectedStartDate: selectedDate,
+											initialDate: selectedDate,
+										})}
 									/>
 								</View>
 							)}
@@ -272,44 +291,74 @@ const CheckAvailabilityModal = ({
 							</View>
 						</View>
 						<View style={styles.buttonContainer}>
-							<TouchableOpacity
-								style={styles.button}
-								onPress={() => {
-									handleAddToCart({
-										startDate: convertedDate,
-										participants: guestInfo,
-									});
-								}}
-								disabled={isLoading}
-							>
-								{isLoading ? (
-									<ActivityIndicator color="#fff" />
-								) : (
-									<ReusableText
-										text="Add to cart"
-										size={16}
-										family="bold"
-										color={COLORS.white}
-									/>
-								)}
-							</TouchableOpacity>
+							{editingItem ? (
+								<>
+									<TouchableOpacity
+										style={styles.button}
+										onPress={() => {
+											handleUpdateItem({
+												itemId: editingItem?._id,
+												startDate: convertedDate,
+												participants: guestInfo,
+											});
+										}}
+										disabled={isLoading}
+									>
+										{isLoading ? (
+											<ActivityIndicator color="#fff" />
+										) : (
+											<ReusableText
+												text="Save changes"
+												size={16}
+												family="bold"
+												color={COLORS.white}
+											/>
+										)}
+									</TouchableOpacity>
+								</>
+							) : (
+								<>
+									<TouchableOpacity
+										style={styles.button}
+										onPress={() => {
+											handleAddToCart({
+												itemId: editingItem?._id,
+												startDate: convertedDate,
+												participants: guestInfo,
+											});
+										}}
+										disabled={isLoading}
+									>
+										{isLoading ? (
+											<ActivityIndicator color="#fff" />
+										) : (
+											<ReusableText
+												text="Add to cart"
+												size={16}
+												family="bold"
+												color={COLORS.white}
+											/>
+										)}
+									</TouchableOpacity>
 
-							<TouchableOpacity
-								style={styles.button}
-								onPress={handleBookNow}
-								disabled={isLoading}
-							>
-								{isLoading ? (
-									<ActivityIndicator color="#fff" />
-								) : (
-									<ReusableText
-										text="Book now"
-										size={16}
-										family="bold"
-										color={COLORS.white}
-									/>
-								)}
-							</TouchableOpacity>
+									<TouchableOpacity
+										style={styles.button}
+										onPress={handleBookNow}
+										disabled={isLoading}
+									>
+										{isLoading ? (
+											<ActivityIndicator color="#fff" />
+										) : (
+											<ReusableText
+												text="Book now"
+												size={16}
+												family="bold"
+												color={COLORS.white}
+											/>
+										)}
+									</TouchableOpacity>
+								</>
+							)}
 						</View>
 					</View>
 				</ScrollView>

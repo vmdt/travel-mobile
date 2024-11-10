@@ -14,6 +14,7 @@ import GroupListings from "./Listing/GroupListings";
 import Listings from "./Listing/Listings";
 import CheckAvailabilityModal from "./Modal/CheckAvailabilityModal";
 import FilterModal from "./Modal/FilterModal";
+import UpdateCartItem from "./Modal/UpdateCartModal";
 import Slides from "./Onboard/Slides";
 import ProfileDetails from "./ProfileDetails";
 import HeightSpacer from "./Reusable/HeightSpacer";
@@ -43,5 +44,6 @@ export {
 	SearchInput,
 	Slides,
 	TourCard,
+	UpdateCartItem,
 	WidthSpacer,
 };
