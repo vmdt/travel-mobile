@@ -3,6 +3,7 @@ import BackButton from "./Buttons/BackButton";
 import CloseButton from "./Buttons/CloseButton";
 import ReusableBtn from "./Buttons/ReusableBtn";
 import GroupCard from "./CardItem/GroupCard";
+import OrderCard from "./CardItem/OrderCard";
 import SearchCard from "./CardItem/SearchCard";
 import TourCard from "./CardItem/TourCard";
 import CategoryButton from "./Category/CategoryButton";
@@ -35,6 +36,7 @@ export {
 	HeightSpacer,
 	Input,
 	Listings,
+	OrderCard,
 	Password,
 	ProfileDetails,
 	ReusableBtn,

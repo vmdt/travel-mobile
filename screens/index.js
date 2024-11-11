@@ -1,5 +1,6 @@
 import Cart from "./cart/Cart";
 import Chat from "./chat/Chat";
+import Checkout from "./checkout/Checkout";
 import InfoDetails from "./detail/InfoDetails";
 import TourDetail from "./detail/TourDetail";
 import Home from "./home/Home";
@@ -16,6 +17,7 @@ import Signup from "./signup/Signup";
 export {
 	Cart,
 	Chat,
+	Checkout,
 	ForgotPassword,
 	Home,
 	InfoDetails,

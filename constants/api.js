@@ -29,9 +29,14 @@ const CART_ENDPOINTS = {
 	UPDATE_CART_ITEM: "/carts/update",
 };
 
+const BOOKING_ENDPOINTS = {
+	BOOK_NOW: "/booking/book-now",
+};
+
 export {
 	AUTH_ENDPOINTS,
 	BASE_URL,
+	BOOKING_ENDPOINTS,
 	CART_ENDPOINTS,
 	CATEGORY_ENDPOINTS,
 	SEARCH_ENDPOINTS,

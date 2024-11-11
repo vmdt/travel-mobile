@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { useSelector } from "react-redux";
 import {
+	Checkout,
 	ForgotPassword,
 	Login,
 	Onboarding,
@@ -62,6 +63,11 @@ const AppStack = () => {
 			<Stack.Screen
 				name="BottomTab"
 				component={BottomTabNavigation}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="Checkout"
+				component={Checkout}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
