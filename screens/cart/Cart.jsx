@@ -1,4 +1,4 @@
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
@@ -10,12 +10,13 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { updateCheckout } from "../../redux/actions/bookingAction";
 import {
 	deleteCartItem,
 	getListCart,
 	updateCartItem,
 } from "../../redux/actions/cartAction";
-import { formatCurrency } from "../../utils";
+import { formatCurrency, formatDate } from "../../utils";
 import styles from "./cart.style";
 
 const Cart = () => {
@@ -24,6 +25,7 @@ const Cart = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [selectedTourData, setSelectedTourData] = useState(null);
 	const { accessToken } = useSelector((state) => state.auth);
+	const navigation = useNavigation();
 	const isFocused = useIsFocused();
 	const dispatch = useDispatch();
 	const { cart } = useSelector((state) => state.cart);
@@ -56,6 +58,30 @@ const Cart = () => {
 		);
 
 		setModalVisible(false);
+	};
+
+	const handleCheckoutReview = async () => {
+		let tours = [];
+		if (selectedItems.length > 0) {
+			tours = items.reduce((filteredTours, item) => {
+				if (selectedItems.includes(item?._id)) {
+					filteredTours.push({
+						tour: item?.tour?._id,
+						startDate: formatDate(item?.startDate),
+					});
+				}
+				return filteredTours;
+			}, []);
+		}
+
+		await dispatch(
+			updateCheckout({
+				cart: cart?._id,
+				tours,
+			}),
+		);
+
+		navigation.navigate("Checkout");
 	};
 
 	const toggleSelectItem = (id) => {
@@ -255,7 +281,14 @@ const Cart = () => {
 						</View>
 					</TouchableOpacity>
 					<Text style={styles.totalPrice}>{calculateTotalPrice()}</Text>
-					<TouchableOpacity style={styles.checkoutButton}>
+					<TouchableOpacity
+						style={[
+							styles.checkoutButton,
+							selectedItems.length == 0 && { opacity: 0.5 },
+						]}
+						disabled={selectedItems.length == 0}
+						onPress={handleCheckoutReview}
+					>
 						<Text style={styles.checkoutText}>Check out</Text>
 					</TouchableOpacity>
 				</View>

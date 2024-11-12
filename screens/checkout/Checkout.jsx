@@ -1,6 +1,6 @@
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import {
 	Image,
 	ScrollView,
@@ -9,6 +9,8 @@ import {
 	View,
 } from "react-native";
 import { Appbar, Provider as PaperProvider } from "react-native-paper"; // Thêm import
+import { useSelector } from "react-redux";
+import { BookingAPI } from "../../api";
 import {
 	BackButton,
 	Input,
@@ -17,6 +19,7 @@ import {
 	ReusableText,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { formatCurrency } from "../../utils";
 
 const item = {
 	thumbnail:
@@ -29,6 +32,27 @@ const item = {
 
 const Checkout = () => {
 	const navigation = useNavigation();
+	const isFocused = useIsFocused();
+	const { user, accessToken } = useSelector((state) => state.auth);
+	const { cart, tours } = useSelector((state) => state.booking);
+	const [items, setItems] = useState([]);
+	const [checkoutOrder, setCheckoutOrder] = useState({});
+
+	useEffect(() => {
+		const fetchCheckoutReview = async () => {
+			const response = await BookingAPI.checkoutReview(
+				cart,
+				tours,
+				accessToken,
+			);
+			setItems(response.metadata.checkoutReview);
+			setCheckoutOrder(response.metadata.checkoutOrder);
+		};
+
+		if (isFocused) {
+			fetchCheckoutReview();
+		}
+	}, [isFocused]);
 
 	return (
 		<PaperProvider>
@@ -39,7 +63,7 @@ const Checkout = () => {
 				>
 					<View style={styles.header}>
 						<BackButton
-							size={SIZES.large}
+							size={SIZES.xLarge}
 							onPress={() => navigation.goBack()}
 							customStyle={{ alignSelf: "center" }}
 						/>
@@ -63,8 +87,10 @@ const Checkout = () => {
 						color={COLORS.green}
 					/>
 
-					<View style={{ marginTop: 20, marginBottom: 20 }}>
-						<OrderCard item={item} />
+					<View style={{ marginTop: 20, marginBottom: 20, gap: 20 }}>
+						{items.map((item, index) => {
+							return <OrderCard item={item} key={index} />;
+						})}
 					</View>
 
 					<ReusableText
@@ -94,7 +120,7 @@ const Checkout = () => {
 								/>
 
 								<ReusableText
-									text={item?.regularPrice + " VND"}
+									text={formatCurrency(checkoutOrder?.totalPrice)}
 									family={"bold"}
 									size={SIZES.medium + 6}
 									color={COLORS.green}
@@ -109,6 +135,13 @@ const Checkout = () => {
 							>
 								<View style={{ flex: 1, paddingRight: 20 }}>
 									<Input
+										icon={
+											<MaterialIcons
+												name="local-offer"
+												size={18}
+												color={COLORS.black}
+											/>
+										}
 										containerStyles={{ height: 50 }}
 										placeholder="Discount Code"
 										keyboardType="default"

@@ -322,7 +322,6 @@ const CheckAvailabilityModal = ({
 										style={styles.button}
 										onPress={() => {
 											handleAddToCart({
-												itemId: editingItem?._id,
 												startDate: convertedDate,
 												participants: guestInfo,
 											});
@@ -343,7 +342,12 @@ const CheckAvailabilityModal = ({
 
 									<TouchableOpacity
 										style={styles.button}
-										onPress={handleBookNow}
+										onPress={() => {
+											handleBookNow({
+												startDate: convertedDate,
+												participants: guestInfo,
+											});
+										}}
 										disabled={isLoading}
 									>
 										{isLoading ? (

@@ -1,5 +1,5 @@
 import { BookingAPI } from "../../api";
-import { BOOK_NOW } from "../constants";
+import { BOOK_NOW, UPDATE_CHECKOUT_DATA } from "../constants";
 
 export const bookNow = (data, token) => {
 	return async (dispatch) => {
@@ -11,11 +11,20 @@ export const bookNow = (data, token) => {
 
 			dispatch({
 				type: BOOK_NOW,
-				payload: response.metadata,
+				cart: response.metadata.cart,
+				tours: response.metadata.tours,
 			});
 		} catch (error) {
 			console.log("error: ", error.response.data);
 			// TODO: Handle error
 		}
+	};
+};
+
+export const updateCheckout = ({ cart, tours }) => {
+	return {
+		type: UPDATE_CHECKOUT_DATA,
+		cart,
+		tours,
 	};
 };

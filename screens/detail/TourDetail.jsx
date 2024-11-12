@@ -15,6 +15,7 @@ import {
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
+import { bookNow } from "../../redux/actions/bookingAction";
 import { addToCart } from "../../redux/actions/cartAction";
 import InfoDetails from "./InfoDetails";
 import styles from "./tourDetail.style";
@@ -57,7 +58,24 @@ const TourDetail = () => {
 			{ text: "OK" },
 		]);
 
-		// setModalVisible(false);
+		setModalVisible(false);
+	};
+
+	const handleBookNow = async ({ startDate, participants, privateData }) => {
+		const dataCart = {
+			user: user?._id,
+			tour: {
+				tour: tourData?._id,
+				startDate,
+				startTime: "08:00",
+				participants,
+				...privateData,
+			},
+		};
+
+		await dispatch(bookNow(dataCart, accessToken));
+		setModalVisible(false);
+		navigation.navigate("Checkout");
 	};
 
 	if (!tourData) return <ScreenWrapper></ScreenWrapper>;
@@ -181,7 +199,7 @@ const TourDetail = () => {
 						guestInfo={tourData?.priceOptions}
 						totalPrice={30000000}
 						handleAddToCart={handleAddToCart}
-						handleBookNow={() => {}}
+						handleBookNow={handleBookNow}
 					/>
 				</View>
 				{/* </ScrollView> */}

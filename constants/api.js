@@ -31,6 +31,7 @@ const CART_ENDPOINTS = {
 
 const BOOKING_ENDPOINTS = {
 	BOOK_NOW: "/booking/book-now",
+	CHECKOUT_REVIEW: "/checkout/review",
 };
 
 export {

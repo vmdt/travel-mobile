@@ -3,14 +3,15 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import Icon from "../../assets/icons";
 import { COLORS, SIZES } from "../../constants/theme";
+import { formatCurrency, formatDate } from "../../utils";
 import ReusableText from "../Reusable/ReusableText";
 
 const OrderCard = ({ item }) => {
 	return (
 		<View style={styles.item}>
-			<Image source={{ uri: item?.thumbnail }} style={styles.image} />
+			<Image source={{ uri: item?.tour?.thumbnail }} style={styles.image} />
 			<ReusableText
-				text={item?.title}
+				text={item?.tour?.title}
 				family="bold"
 				size={SIZES.medium + 4}
 				numberOfLines={2}
@@ -33,7 +34,12 @@ const OrderCard = ({ item }) => {
 				>
 					<Icon name="dolar" size={SIZES.medium + 4} color={COLORS.green} />
 					<ReusableText
-						text={item?.regularPrice + " VND"}
+						text={formatCurrency(
+							item?.participants.reduce(
+								(acc, part) => acc + part?.quantity * part?.price,
+								0,
+							),
+						)}
 						family={"medium"}
 						size={SIZES.medium + 4}
 						color={COLORS.green}
@@ -51,7 +57,11 @@ const OrderCard = ({ item }) => {
 					}}
 				>
 					<MaterialIcons name="date-range" size={18} color={COLORS.green} />
-					<ReusableText text={item?.startDate} family={"medium"} size={18} />
+					<ReusableText
+						text={formatDate(item?.startDate)}
+						family={"medium"}
+						size={18}
+					/>
 				</View>
 			</View>
 
@@ -65,7 +75,13 @@ const OrderCard = ({ item }) => {
 					}}
 				>
 					<FontAwesome6 name="people-pulling" size={18} color={COLORS.green} />
-					<ReusableText text={item?.participants} family={"medium"} size={18} />
+					<ReusableText
+						text={item?.participants.map((part) => {
+							return `${part?.title} x${part?.quantity}  `;
+						})}
+						family={"medium"}
+						size={18}
+					/>
 				</View>
 			</View>
 		</View>
