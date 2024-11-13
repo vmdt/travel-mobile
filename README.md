@@ -3,12 +3,7 @@
 </p>
 
 ## Travelife Mobile
-
-Travelife Mobile is built using Javascript, Redux, and React Native. It uses Expo, that is a framework that makes developing Android and iOS apps easier. 
-
-### Setup
-
-This project uses React Native. For first time set up, inside the ```/travel-mobile``` folder, run:
+ tive. For first time set up, inside the ```/travel-mobile``` folder, run:
 ```bash
   npm install && npm start
 ```

@@ -1,6 +1,7 @@
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback } from "react";
+import Toast from "react-native-toast-message";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import RootNavigation from "./navigation";
@@ -27,10 +28,13 @@ export default function App() {
 	}
 
 	return (
-		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
-				<RootNavigation />
-			</PersistGate>
-		</Provider>
+		<>
+			<Provider store={store}>
+				<PersistGate loading={null} persistor={persistor}>
+					<RootNavigation />
+				</PersistGate>
+			</Provider>
+			<Toast />
+		</>
 	);
 }
