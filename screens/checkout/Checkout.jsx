@@ -159,7 +159,7 @@ const Checkout = () => {
 												family={"bold"}
 												size={SIZES.medium + 4}
 												color={COLORS.gray}
-												textDecorationLine="line-through"
+												style={{ textDecorationLine: "line-through" }}
 											/>
 											<ReusableText
 												text={formatCurrency(checkoutOrder?.totalPrice)}
