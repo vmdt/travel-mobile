@@ -1,4 +1,4 @@
-const BASE_URL = "http://172.16.126.1:4001/api/v1";
+const BASE_URL = "http://192.168.1.250:4001/api/v1";
 
 const AUTH_ENDPOINTS = {
 	LOGIN: "/auth/login",
