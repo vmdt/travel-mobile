@@ -5,6 +5,7 @@ import {
 	Checkout,
 	ForgotPassword,
 	Login,
+	MyWebView,
 	Onboarding,
 	OTPVerification,
 	ResetPassword,
@@ -68,6 +69,11 @@ const AppStack = () => {
 			<Stack.Screen
 				name="Checkout"
 				component={Checkout}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="MyWebView"
+				component={MyWebView}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

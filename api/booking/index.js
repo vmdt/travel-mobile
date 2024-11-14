@@ -37,3 +37,38 @@ export const checkoutReview = async (cartId, tours, token) => {
 		return error;
 	}
 };
+
+export const createBooking = async (data, token) => {
+	try {
+		const response = await api.post(BOOKING_ENDPOINTS.CREATE_BOOKING, data, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		return response.data;
+	} catch (error) {
+		console.log("error: ", error.response.data);
+		// TODO: Handle error
+		return error;
+	}
+};
+
+export const getVNPayUrl = async (bookingId, token) => {
+	try {
+		const response = await api.get(
+			`${BOOKING_ENDPOINTS.GET_VNPAY_URL(bookingId, "vnpay")}?payOnMobile=true`,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+
+		return response.data;
+	} catch (error) {
+		console.log("error: ", error.response.data);
+		// TODO: Handle error
+		return error.response.data;
+	}
+};

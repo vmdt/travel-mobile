@@ -13,6 +13,7 @@ import Profile from "./profile/Profile";
 import Review from "./review/Review";
 import Search from "./search/Search";
 import Signup from "./signup/Signup";
+import MyWebView from "./webview/MyWebView";
 
 export {
 	Cart,
@@ -22,6 +23,7 @@ export {
 	Home,
 	InfoDetails,
 	Login,
+	MyWebView,
 	OTPVerification,
 	Onboarding,
 	Profile,

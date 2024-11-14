@@ -32,6 +32,9 @@ const CART_ENDPOINTS = {
 const BOOKING_ENDPOINTS = {
 	BOOK_NOW: "/booking/book-now",
 	CHECKOUT_REVIEW: "/checkout/review",
+	CREATE_BOOKING: "/booking",
+	GET_VNPAY_URL: (bookingId, method = "vnpay") =>
+		`/checkout/re-pay/${bookingId}/${method}`,
 };
 
 const DISCOUNT_ENDPOINTS = {

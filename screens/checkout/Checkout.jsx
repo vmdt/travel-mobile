@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import React, { useEffect, useState } from "react";
 import {
 	Image,
+	Linking,
 	ScrollView,
 	StyleSheet,
 	TouchableOpacity,
@@ -23,7 +24,7 @@ import {
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
 import { personalInfoSchema } from "../../schema/user.schema";
-import { formatCurrency } from "../../utils";
+import { formatCurrency, formatDate } from "../../utils";
 
 const Checkout = () => {
 	const navigation = useNavigation();
@@ -48,11 +49,34 @@ const Checkout = () => {
 		if (isFocused) {
 			fetchCheckoutReview();
 		}
-
-		console.log("user: ", user);
 	}, [isFocused]);
 
-	const handlePayNow = async () => {};
+	const handlePayNow = async (personalInfo) => {
+		const bookingData = {
+			cart,
+			tours: items.map((item) => {
+				return {
+					tour: item?.tour?._id,
+					startDate: formatDate(item?.startDate),
+				};
+			}),
+			personalInfo,
+			...(discountCode && { discountCode }),
+		};
+
+		const bookingRes = await BookingAPI.createBooking(bookingData, accessToken);
+		const payRes = await BookingAPI.getVNPayUrl(
+			bookingRes?.metadata?.booking?._id,
+			accessToken,
+		);
+
+		const { paymentURL } = payRes?.metadata;
+		console.log("paymentURL: ", paymentURL);
+
+		// navigation.navigate("MyWebView", { url: paymentURL });
+		Linking.openURL(paymentURL);
+		navigation.navigate("BottomTab");
+	};
 
 	const handleApplyDiscount = async () => {
 		if (!discountCode) {
@@ -159,7 +183,7 @@ const Checkout = () => {
 												family={"bold"}
 												size={SIZES.medium + 4}
 												color={COLORS.gray}
-												textDecorationLine="line-through"
+												style={{ textDecorationLine: "line-through" }}
 											/>
 											<ReusableText
 												text={formatCurrency(checkoutOrder?.totalPrice)}
@@ -231,8 +255,12 @@ const Checkout = () => {
 							email: user?.email ?? "",
 						}}
 						validationSchema={personalInfoSchema}
-						onSubmit={() => {
-							console.log("submit");
+						onSubmit={async (values, { setErrors }) => {
+							handlePayNow({
+								fullname: values?.fullname,
+								phone: values?.phone,
+								email: values?.email,
+							});
 						}}
 					>
 						{({
