@@ -4,14 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	Booking,
-	ProfileDetails,
-	ReusableText,
-	ScreenWrapper,
-} from "../../components";
+import { ProfileDetails, ReusableText, ScreenWrapper } from "../../components";
 import { AVATAR_DEFAULT, COLORS, SIZES } from "../../constants/theme";
 import { updateUserLogout } from "../../redux/actions/authAction";
+import Booking from "../booking/Booking";
 import styles from "./profile.style";
 
 const Tab = createMaterialTopTabNavigator();

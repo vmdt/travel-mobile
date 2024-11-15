@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { useSelector } from "react-redux";
 import {
+	BookingDetails,
 	Checkout,
 	ForgotPassword,
 	Login,
@@ -74,6 +75,11 @@ const AppStack = () => {
 			<Stack.Screen
 				name="MyWebView"
 				component={MyWebView}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="BookingDetails"
+				component={BookingDetails}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

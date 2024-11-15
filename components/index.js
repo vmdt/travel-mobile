@@ -2,6 +2,7 @@ import Booking from "./Booking";
 import BackButton from "./Buttons/BackButton";
 import CloseButton from "./Buttons/CloseButton";
 import ReusableBtn from "./Buttons/ReusableBtn";
+import BookingCard from "./CardItem/BookingCard";
 import GroupCard from "./CardItem/GroupCard";
 import OrderCard from "./CardItem/OrderCard";
 import SearchCard from "./CardItem/SearchCard";
@@ -13,6 +14,7 @@ import Password from "./Input/Password";
 import SearchInput from "./Input/SearchInput";
 import GroupListings from "./Listing/GroupListings";
 import Listings from "./Listing/Listings";
+import BookingDetailsModal from "./Modal/BookingDetailsModal";
 import CheckAvailabilityModal from "./Modal/CheckAvailabilityModal";
 import FilterModal from "./Modal/FilterModal";
 import UpdateCartItem from "./Modal/UpdateCartModal";
@@ -27,6 +29,8 @@ export {
 	Avatar,
 	BackButton,
 	Booking,
+	BookingCard,
+	BookingDetailsModal,
 	CategoryButton,
 	CheckAvailabilityModal,
 	CloseButton,

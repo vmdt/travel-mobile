@@ -1,3 +1,5 @@
+import Booking from "./booking/Booking";
+import BookingDetails from "./booking/BookingDetails";
 import Cart from "./cart/Cart";
 import Chat from "./chat/Chat";
 import Checkout from "./checkout/Checkout";
@@ -16,6 +18,8 @@ import Signup from "./signup/Signup";
 import MyWebView from "./webview/MyWebView";
 
 export {
+	Booking,
+	BookingDetails,
 	Cart,
 	Chat,
 	Checkout,

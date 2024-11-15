@@ -1,12 +1,13 @@
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import QRCode from "react-native-qrcode-svg";
 import Icon from "../../assets/icons";
 import { COLORS, SIZES } from "../../constants/theme";
 import { formatCurrency, formatDate } from "../../utils";
 import ReusableText from "../Reusable/ReusableText";
 
-const OrderCard = ({ item }) => {
+const OrderCard = ({ item, review, handleReview }) => {
 	return (
 		<View style={styles.item}>
 			<Image source={{ uri: item?.tour?.thumbnail }} style={styles.image} />
@@ -83,7 +84,29 @@ const OrderCard = ({ item }) => {
 						size={18}
 					/>
 				</View>
+
+				{review && (
+					<TouchableOpacity onPress={handleReview}>
+						<ReusableText
+							text={"Review"}
+							family={"medium"}
+							size={18}
+							color={COLORS.green}
+							style={{ textDecorationLine: "underline" }}
+						/>
+					</TouchableOpacity>
+				)}
 			</View>
+			{review && (
+				<View style={{ marginTop: 10, alignItems: "center", gap: 10 }}>
+					<QRCode value={review} />
+					<ReusableText
+						text="Show this QR code to the staff"
+						family={"medium"}
+						color={COLORS.green}
+					/>
+				</View>
+			)}
 		</View>
 	);
 };

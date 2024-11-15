@@ -72,3 +72,36 @@ export const getVNPayUrl = async (bookingId, token) => {
 		return error.response.data;
 	}
 };
+
+export const getListBookings = async (token) => {
+	try {
+		const response = await api.get(BOOKING_ENDPOINTS.GET_LIST_BOOKINGS, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		return response.data;
+	} catch (error) {
+		console.log("error: ", error.response.data);
+		// TODO: Handle error
+		return error.response.data;
+	}
+};
+
+export const getBookingDetails = async (bookingId, token) => {
+	try {
+		const response = await api.get(
+			BOOKING_ENDPOINTS.GET_BOOKING_DETAILS(bookingId),
+			{
+				headers: { Authorization: `Bearer ${token}` },
+			},
+		);
+
+		return response.data;
+	} catch (error) {
+		console.log("error: ", error.response.data);
+		// TODO: Handle error
+		return error.response.data;
+	}
+};
