@@ -71,11 +71,14 @@ const Checkout = () => {
 		);
 
 		const { paymentURL } = payRes?.metadata;
-		console.log("paymentURL: ", paymentURL);
 
 		// navigation.navigate("MyWebView", { url: paymentURL });
+		Toast.show({
+			type: "success",
+			text1: "Create Booking Successfully",
+		});
 		Linking.openURL(paymentURL);
-		navigation.navigate("BottomTab");
+		navigation.navigate("Home");
 	};
 
 	const handleApplyDiscount = async () => {
