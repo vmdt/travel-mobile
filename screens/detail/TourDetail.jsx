@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { TourAPI } from "../../api";
 import {
 	BackButton,
-	Booking,
 	CheckAvailabilityModal,
 	ReusableBtn,
 	ReusableText,
@@ -17,6 +16,7 @@ import {
 import { COLORS, SIZES } from "../../constants/theme";
 import { bookNow } from "../../redux/actions/bookingAction";
 import { addToCart } from "../../redux/actions/cartAction";
+import Review from "../review/Review";
 import InfoDetails from "./InfoDetails";
 import styles from "./tourDetail.style";
 
@@ -188,7 +188,7 @@ const TourDetail = () => {
 									return <InfoDetails tourData={tourData} />;
 								}}
 							/>
-							<Tab.Screen name="Review" component={Booking} />
+							<Tab.Screen name="Review" component={Review} />
 						</Tab.Navigator>
 					</View>
 

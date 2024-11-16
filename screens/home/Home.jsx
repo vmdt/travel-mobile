@@ -60,7 +60,7 @@ const Home = () => {
 								/>
 								<ReusableText
 									text={user?.username}
-									family="xtrabold"
+									family="bold"
 									size={SIZES.large}
 								/>
 							</View>

@@ -86,7 +86,11 @@ const OrderCard = ({ item, review, handleReview }) => {
 				</View>
 
 				{review && (
-					<TouchableOpacity onPress={handleReview}>
+					<TouchableOpacity
+						onPress={() => {
+							handleReview(item?.tour?._id);
+						}}
+					>
 						<ReusableText
 							text={"Review"}
 							family={"medium"}

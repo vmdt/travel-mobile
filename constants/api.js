@@ -43,6 +43,11 @@ const DISCOUNT_ENDPOINTS = {
 	GET_DISCOUNT_AMOUNT: "/discounts/amount",
 };
 
+const REVIEW_ENDPOINTS = {
+	CREATE_REVIEW: "/reviews",
+	GET_REVIEWS_IN_TOUR: (tourId) => `/reviews/tour/${tourId}`,
+};
+
 export {
 	AUTH_ENDPOINTS,
 	BASE_URL,
@@ -50,6 +55,7 @@ export {
 	CART_ENDPOINTS,
 	CATEGORY_ENDPOINTS,
 	DISCOUNT_ENDPOINTS,
+	REVIEW_ENDPOINTS,
 	SEARCH_ENDPOINTS,
 	TOUR_ENDPOINTS,
 };

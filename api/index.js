@@ -3,6 +3,7 @@ import * as BookingAPI from "./booking";
 import * as CartAPI from "./cart";
 import * as CategoryAPI from "./category";
 import * as DiscountAPI from "./discount";
+import * as ReviewAPI from "./review";
 import * as SearchAPI from "./search";
 import * as TourAPI from "./tour";
 
@@ -12,6 +13,7 @@ export {
 	CartAPI,
 	CategoryAPI,
 	DiscountAPI,
+	ReviewAPI,
 	SearchAPI,
 	TourAPI,
 };

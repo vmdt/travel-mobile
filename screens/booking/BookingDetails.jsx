@@ -1,14 +1,16 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Linking, ScrollView, StyleSheet, View } from "react-native";
+import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
-import { BookingAPI } from "../../api";
+import { BookingAPI, ReviewAPI } from "../../api";
 import {
 	BackButton,
 	BookingCard,
 	OrderCard,
 	ReusableBtn,
 	ReusableText,
+	ReviewModal,
 	ScreenWrapper,
 } from "../../components";
 import { COLORS, SIZES } from "../../constants/theme";
@@ -17,8 +19,33 @@ const BookingDetails = () => {
 	const navigation = useNavigation();
 	const route = useRoute();
 	const [bookingDetails, setBookingDetails] = useState(null);
-	const { accessToken } = useSelector((state) => state.auth);
+	const [visible, setVisible] = useState(false);
 	const { bookingId } = route.params;
+	const { user, accessToken } = useSelector((state) => state.auth);
+	const [tour, setTour] = useState(null);
+
+	handleSubmitReview = async (rating, content) => {
+		const response = await ReviewAPI.createReview(
+			{
+				user: user?._id,
+				tour: tour,
+				rating: rating,
+				content: content,
+			},
+			accessToken,
+		);
+		setVisible(false);
+		Toast.show({
+			type: "success",
+			text1: "Review submitted successfully",
+			text2: "This review will be approved soon",
+		});
+	};
+
+	const handleReview = (tourId) => {
+		setTour(tourId);
+		setVisible(true);
+	};
 
 	useEffect(() => {
 		const fetchBookingDetails = async () => {
@@ -27,7 +54,6 @@ const BookingDetails = () => {
 				accessToken,
 			);
 			setBookingDetails(response?.metadata);
-			console.log(bookingDetails?.status);
 		};
 		fetchBookingDetails();
 	}, []);
@@ -83,6 +109,7 @@ const BookingDetails = () => {
 										item={item}
 										key={index}
 										review={item?.ticketCode}
+										handleReview={handleReview}
 									/>
 								);
 							})}
@@ -90,6 +117,11 @@ const BookingDetails = () => {
 					)}
 				</ScrollView>
 			</View>
+			<ReviewModal
+				visible={visible}
+				onClose={() => setVisible(false)}
+				handleSubmitReview={handleSubmitReview}
+			/>
 		</ScreenWrapper>
 	);
 };

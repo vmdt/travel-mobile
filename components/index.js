@@ -17,6 +17,7 @@ import Listings from "./Listing/Listings";
 import BookingDetailsModal from "./Modal/BookingDetailsModal";
 import CheckAvailabilityModal from "./Modal/CheckAvailabilityModal";
 import FilterModal from "./Modal/FilterModal";
+import ReviewModal from "./Modal/ReviewModal";
 import UpdateCartItem from "./Modal/UpdateCartModal";
 import Slides from "./Onboard/Slides";
 import ProfileDetails from "./ProfileDetails";
@@ -45,6 +46,7 @@ export {
 	ProfileDetails,
 	ReusableBtn,
 	ReusableText,
+	ReviewModal,
 	ScreenWrapper,
 	SearchCard,
 	SearchInput,
