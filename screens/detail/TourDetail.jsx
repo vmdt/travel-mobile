@@ -188,7 +188,12 @@ const TourDetail = () => {
 									return <InfoDetails tourData={tourData} />;
 								}}
 							/>
-							<Tab.Screen name="Review" component={Review} />
+							<Tab.Screen
+								name="Review"
+								children={() => {
+									return <Review tourId={tourData?._id} />;
+								}}
+							/>
 						</Tab.Navigator>
 					</View>
 

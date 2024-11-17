@@ -16,3 +16,22 @@ export const createReview = async (data, token) => {
 		return error.response.data;
 	}
 };
+
+export const getReviewsInTour = async (tourId, token) => {
+	try {
+		const response = await api.get(
+			REVIEW_ENDPOINTS.GET_REVIEWS_IN_TOUR(tourId),
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+
+		return response.data;
+	} catch (error) {
+		console.log("Error at getReviewsInTour: ", error.response.data);
+		// TODO: Handle error
+		return error.response.data;
+	}
+};
