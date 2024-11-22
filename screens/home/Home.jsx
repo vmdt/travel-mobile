@@ -1,7 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
+import messaging from "@react-native-firebase/messaging";
 import { useNavigation } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import PushNotification from "react-native-push-notification";
 import { useSelector } from "react-redux";
 import {
 	Avatar,
@@ -11,6 +13,7 @@ import {
 	HeightSpacer,
 	Input,
 	Listings,
+	NotificationModal,
 	ReusableText,
 	ScreenWrapper,
 } from "../../components";
@@ -18,13 +21,40 @@ import { AVATAR_DEFAULT, COLORS, SIZES } from "../../constants/theme";
 import mockCategories from "../../data/categories";
 import mockGroups from "../../data/groups";
 import mockTours from "../../data/tours";
+import { formatDate } from "../../utils";
 import styles from "./home.style";
+
+const notifications = [
+	{
+		_id: "1",
+		title: "Sales off 100% from 2024-11-20 to 2024-11-30",
+		message: "CODE: 123456",
+	},
+	{
+		_id: "2",
+		title: "Sales off 100% from 2024-11-20 to 2024-11-30",
+		message: "CODE: 123456",
+	},
+	{
+		_id: "3",
+		title: "Sales off 100% from 2024-11-20 to 2024-11-30",
+		message: "CODE: 123456",
+	},
+	{
+		_id: "4",
+		title: "Sales off 100% from 2024-11-20 to 2024-11-30",
+		message: "CODE: 123456",
+	},
+];
 
 const Home = () => {
 	const navigation = useNavigation();
 	const { user } = useSelector((state) => state.auth);
 	const [category, setCategory] = useState("");
+	const [hasNotification, setHasNotification] = useState(false);
 	const [modalVisible, setModalVisible] = useState(false);
+	const [modalNotificationVisible, setModalNotificationVisible] =
+		useState(false);
 	const [selectedFilterCount, setSelectedFilterCount] = useState(0);
 	const [searchText, setSearchText] = useState("");
 	const inputRef = useRef(null);
@@ -36,6 +66,41 @@ const Home = () => {
 	const onCategoryChange = (category) => {
 		setCategory(category);
 	};
+
+	useEffect(() => {
+		const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+			console.log("Foreground message received: ", remoteMessage);
+			// Handle the foreground message here (e.g., show a notification)
+			setHasNotification(true);
+		});
+
+		// Set background message handler
+		messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+			console.log("Background message received: ", remoteMessage);
+			const { title } = remoteMessage.data;
+			const { discount } = remoteMessage.data;
+			const discountObj = JSON.parse(discount);
+
+			// Handle the background message here (e.g., show a notification)
+			PushNotification.localNotification({
+				channelId: "default-channel-id", // Must match the ID of the created channel
+				title: title || "New noti", // Notification title
+				message: `${discountObj?.name} start from ${formatDate(discountObj?.startDate)} to ${formatDate(discountObj?.endDate)}`, // Notification content
+				bigText: `${discountObj?.name} start from ${formatDate(discountObj?.startDate)} to ${formatDate(discountObj?.endDate)}`, // Expanded content (Android)
+				vibrate: true, // Vibrate when receiving a notification
+				vibration: 300, // Vibration duration (ms)
+				playSound: true, // Play sound
+				soundName: "default", // Sound file name (set to default)
+				priority: "high", // Priority (Android)
+			});
+
+			setHasNotification(true);
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	}, []);
 
 	return (
 		<ScreenWrapper>
@@ -67,11 +132,21 @@ const Home = () => {
 						</View>
 
 						<TouchableOpacity
-							onPress={() => {}}
+							onPress={() => {
+								setModalNotificationVisible(true);
+								setHasNotification(false);
+							}}
 							style={styles.notificationIcon}
 						>
 							<Ionicons name="notifications" size={24} color={COLORS.black} />
+							{hasNotification && <View style={styles.redDot} />}
 						</TouchableOpacity>
+
+						<NotificationModal
+							visible={modalNotificationVisible}
+							onClose={() => setModalNotificationVisible(false)}
+							notifications={notifications}
+						/>
 					</View>
 
 					<View style={styles.body}>

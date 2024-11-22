@@ -48,6 +48,12 @@ const REVIEW_ENDPOINTS = {
 	GET_REVIEWS_IN_TOUR: (tourId) => `/reviews/tour/${tourId}`,
 };
 
+const NOTIFICATION_ENDPOINTS = {
+	SUBCRIBE_TO_TOPIC: "/notifications/subscribe-topic",
+	REGISTER_DEVICE: "/notifications/register-device",
+	GET_NOTIFICATIONS_BY_USER: (userId) => `/notifications/${userId}`,
+};
+
 export {
 	AUTH_ENDPOINTS,
 	BASE_URL,
@@ -55,6 +61,7 @@ export {
 	CART_ENDPOINTS,
 	CATEGORY_ENDPOINTS,
 	DISCOUNT_ENDPOINTS,
+	NOTIFICATION_ENDPOINTS,
 	REVIEW_ENDPOINTS,
 	SEARCH_ENDPOINTS,
 	TOUR_ENDPOINTS,

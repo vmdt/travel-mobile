@@ -17,6 +17,7 @@ import Listings from "./Listing/Listings";
 import BookingDetailsModal from "./Modal/BookingDetailsModal";
 import CheckAvailabilityModal from "./Modal/CheckAvailabilityModal";
 import FilterModal from "./Modal/FilterModal";
+import NotificationModal from "./Modal/NotificationModal";
 import ReviewModal from "./Modal/ReviewModal";
 import UpdateCartItem from "./Modal/UpdateCartModal";
 import Slides from "./Onboard/Slides";
@@ -41,6 +42,7 @@ export {
 	HeightSpacer,
 	Input,
 	Listings,
+	NotificationModal,
 	OrderCard,
 	Password,
 	ProfileDetails,

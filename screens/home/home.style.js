@@ -71,6 +71,15 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		fontWeight: "bold",
 	},
+	redDot: {
+		position: "absolute",
+		right: 0,
+		top: 0,
+		width: 8,
+		height: 8,
+		borderRadius: 4,
+		backgroundColor: "red",
+	},
 });
 
 export default styles;
